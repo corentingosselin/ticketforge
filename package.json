@@ -2,7 +2,12 @@
   "name": "ticketforge",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+
+    "start": "nx run-many --target=serve --projects=api-gateway,auth-service,event-service,ticket-service,user-service --parallel --maxParallel=4",
+    "docker": "docker-compose -f docker/docker-compose.yml --env-file docker/.docker-compose.env up -d --force-recreate"
+
+  },
   "private": true,
   "dependencies": {
     "@mikro-orm/core": "^5.6.15",
@@ -15,6 +20,8 @@
     "amqp-connection-manager": "^4.1.11",
     "amqplib": "^0.10.3",
     "axios": "^1.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.3.0"

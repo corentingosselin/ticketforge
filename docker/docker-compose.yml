@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  rabbitmq:
+    container_name: 'rabbitmq'
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      # AMQP protocol port
+      - '${RABBITMQ_PORT}:${RABBITMQ_PORT}'
+      # HTTP management UI
+      - '15672:15672'
+    volumes:
+      - rabbitmq-volume:/var/lib/rabbitmq
+volumes:
+  rabbitmq-volume:
+name: ticketforge

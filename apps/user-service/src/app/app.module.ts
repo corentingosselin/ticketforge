@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { UserServiceCoreModule } from '@ticketforge/user-service/core';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    UserServiceCoreModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    })
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
