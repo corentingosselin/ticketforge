@@ -11,13 +11,12 @@ import { LoginUserDto, CreateUserDto } from '@ticketforge/shared/api-interfaces'
     constructor(private readonly authService: AuthService) {}
   
     @Post('login')
-    async login(@Body() loginUserDto: LoginUserDto) {
-      console.log(loginUserDto);
+    login(@Body() loginUserDto: LoginUserDto) {
       return this.authService.login(loginUserDto);
     }
 
     @Post('register')
-    async register(@Body() createUserDto: CreateUserDto) {
+    register(@Body() createUserDto: CreateUserDto) {
       return this.authService.register(createUserDto);
     }
 

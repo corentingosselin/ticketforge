@@ -1,5 +1,38 @@
 version: '3.9'
 services:
+  user-service-db:
+    container_name: 'user-service-db'
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_USER=${MYSQL_USER}
+    ports:
+      - '${USER_SERVICE_DB_PORT}:${USER_SERVICE_DB_PORT}'
+    volumes:
+      - user-service-db-volume:/var/lib/mysql
+  event-service-db:
+    container_name: 'event-service-db'
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_USER=${MYSQL_USER}
+    ports:
+      - '${EVENT_SERVICE_DB_PORT}:${EVENT_SERVICE_DB_PORT}'
+    volumes:
+      - event-service-db-volume:/var/lib/mysql
+  ticket-service-db:
+    container_name: 'ticket-service-db'
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_USER=${MYSQL_USER}
+    ports:
+      - '${TICKET_SERVICE_DB_PORT}:3306'
+    volumes:
+      - ticket-service-db-volume:/var/lib/mysql
   rabbitmq:
     container_name: 'rabbitmq'
     image: rabbitmq:3.8-management-alpine
@@ -15,4 +48,7 @@ services:
       - rabbitmq-volume:/var/lib/rabbitmq
 volumes:
   rabbitmq-volume:
+  user-service-db-volume:
+  event-service-db-volume:
+  ticket-service-db-volume:
 name: ticketforge

@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from '@ticketforge/auth-service/data-access';
-import { AuthController } from './auth.controller';
 import { SharedMessageBrokerModule } from '@ticketforge/shared/message-broker';
+import { AuthController } from './auth.controller';
+import { AuthServiceDataAccessModule } from '@ticketforge/auth-service/data-access';
 
 @Module({
   controllers: [
     AuthController
   ],
-  providers: [
-    AuthService
-  ],
+  providers: [],
   exports: [],
   imports: [
+    AuthServiceDataAccessModule,
     SharedMessageBrokerModule
   ]
 })

@@ -13,8 +13,6 @@ import { MessageBrokerService } from '@ticketforge/shared/message-broker';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
 
   const msgBrokerService = app.get(MessageBrokerService);
   const clientOtions = msgBrokerService.getOptions(EVENT_SERVICE);
@@ -25,7 +23,7 @@ async function bootstrap() {
   const port = config.get('EVENT_SERVICE_PORT') || 3500;
   await app.listen(port);
   Logger.log(
-    `🚀 Event service is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Event service is running on: http://localhost:${port}`
   );
 }
 

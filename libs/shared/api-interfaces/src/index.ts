@@ -11,3 +11,4 @@ export * from './lib/responses/user.response';
 export * from './lib/responses/ticket.response';
 export * from './lib/responses/event.response';
 export * from './lib/responses/auth.response';
+export * from './lib/entities/base.entity';

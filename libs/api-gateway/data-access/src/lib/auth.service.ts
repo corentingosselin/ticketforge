@@ -14,10 +14,8 @@ export class AuthService {
     return this.authentificationService.send(LOGIN_CMD, loginDto);
   }
 
-  async register(registerDto: CreateUserDto) {
-    const result = this.authentificationService.send(REGISTER_CMD, registerDto);
-    console.log(result);
-    return result;
+  register(registerDto: CreateUserDto) {
+    return this.authentificationService.send(REGISTER_CMD, registerDto);
   }
 
 }

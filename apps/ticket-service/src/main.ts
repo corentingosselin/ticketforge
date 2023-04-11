@@ -13,9 +13,6 @@ import { TICKET_SERVICE } from '@ticketforge/shared/api-interfaces';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-
   const msgBrokerService = app.get(MessageBrokerService);
   const clientOtions = msgBrokerService.getOptions(TICKET_SERVICE);
   app.connectMicroservice(clientOtions);
@@ -25,7 +22,7 @@ async function bootstrap() {
   const port = config.get('TICKET_SERVICE_PORT') || 3400;
   await app.listen(port);
   Logger.log(
-    `🚀 Ticket Service is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Ticket Service is running on: http://localhost:${port}`
   );
 }
 

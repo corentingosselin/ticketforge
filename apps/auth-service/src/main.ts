@@ -13,8 +13,6 @@ import { AUTH_SERVICE } from '@ticketforge/shared/api-interfaces';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
 
   const msgBrokerService = app.get(MessageBrokerService);
   const clientOtions = msgBrokerService.getOptions(AUTH_SERVICE);
@@ -25,7 +23,7 @@ async function bootstrap() {
   const port = config.get('AUTH_SERVICE_PORT') || 3300;
   await app.listen(port);
   Logger.log(
-    `🚀 Auth Service is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Auth Service is running on: http://localhost:${port}`
   );
 }
 

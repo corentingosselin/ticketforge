@@ -28,6 +28,7 @@ export class SharedMessageBrokerModule {
                 urls: [configService.get<string>('MESSAGE_BROKER_URI')],
                 queue: configService.get<string>(`MESSAGE_BROKER_${name}_QUEUE`),
                 durable: true,
+                
               },
             }),
             inject: [ConfigService],
