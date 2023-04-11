@@ -1,15 +1,15 @@
 import { Options } from "@mikro-orm/core";
-import { UserEntity } from "@ticketforge/user-service/data-access";
+import { EventEntity } from "@ticketforge/event-service/data-access";
 
 export default {
     type: "mysql" as const,
     host: process.env.MYSQL_HOST,
-    port: Number.parseInt(process.env.USER_SERVICE_DB_PORT),
+    port: Number.parseInt(process.env.EVENT_SERVICE_DB_PORT),
     dbName: process.env.MYSQL_DATABASE,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    entities: [UserEntity],
+    entities: [EventEntity],
     migrations: {
-      path: "apps/user-service/migrations",
+      path: "apps/event-service/migrations",
     },
   } as Options;

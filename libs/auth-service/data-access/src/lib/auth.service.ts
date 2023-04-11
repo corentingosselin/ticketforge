@@ -5,7 +5,7 @@ import {
   LoginUserDto,
   USER_SERVICE,
   UserResponse,
-  UserSessionResponse,
+  UserSessionResponse
 } from '@ticketforge/shared/api-interfaces';
 import { CREATE_USER_CMD } from '@ticketforge/shared/message-broker';
 import { Observable, of } from 'rxjs';

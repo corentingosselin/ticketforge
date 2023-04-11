@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { TicketServiceFeatureModule } from '@ticketforge/ticket-service/feature';
-import mikroOrmConfig from '../mikro-orm.config';
+import { mikroOrmConfig } from '../mikro-orm.config';
 
 @Module({
   controllers: [],
@@ -17,8 +17,10 @@ import mikroOrmConfig from '../mikro-orm.config';
           ...mikroOrmConfig
         }),
         inject: [],
-
     }),
   ],
 })
-export class TicketServiceCoreModule {}
+export class TicketServiceCoreModule {
+
+
+}

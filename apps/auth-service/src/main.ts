@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
@@ -20,6 +20,19 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   const config = app.get(ConfigService);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      enableDebugMessages: true,
+      disableErrorMessages: config.get('NODE_ENV') === 'production',
+      stopAtFirstError: true,
+      forbidUnknownValues: true,
+      skipMissingProperties: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   const port = config.get('AUTH_SERVICE_PORT') || 3300;
   await app.listen(port);
   Logger.log(

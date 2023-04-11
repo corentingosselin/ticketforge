@@ -16,7 +16,7 @@ import { LoginUserDto, CreateUserDto } from '@ticketforge/shared/api-interfaces'
     }
 
     @Post('register')
-    register(@Body() createUserDto: CreateUserDto) {
+    async register(@Body() createUserDto: CreateUserDto) {
       return this.authService.register(createUserDto);
     }
 

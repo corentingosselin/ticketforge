@@ -1,0 +1,1 @@
+create table `ticket_entity` (`id` varchar(255) not null, `created_at` datetime not null, `updated_at` datetime not null, `name` varchar(255) not null, `description` varchar(255) not null, `price` int not null, `user_id` varchar(255) not null, `event_id` varchar(255) not null, primary key (`id`)) default character set utf8mb4 engine = InnoDB;

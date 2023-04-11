@@ -24,6 +24,10 @@ export class CreateUserDto implements Omit<User, DEFAULT_OMIT> {
 }
 
 export class UpdateUserDto implements Partial<CreateUserDto> {
+
+  @IsString()
+  id!: string;
+  
   @IsString()
   firstName?: string;
 

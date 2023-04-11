@@ -1,0 +1,1 @@
+create table `user_entity` (`id` varchar(255) not null, `created_at` datetime not null, `updated_at` datetime not null, `first_name` varchar(255) not null, `last_name` varchar(255) not null, `email` varchar(255) not null, `password` varchar(255) not null, primary key (`id`)) default character set utf8mb4 engine = InnoDB;

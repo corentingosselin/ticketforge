@@ -1,67 +1,56 @@
-import { EntityManager, MikroORM, UseRequestContext } from '@mikro-orm/core';
-import { Injectable } from '@nestjs/common';
+import { MikroORM, UseRequestContext } from '@mikro-orm/core';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
-    CreateUserDto,
-    UpdateUserDto,
-    UserResponse,
+  CreateUserDto,
+  UpdateUserDto,
+  UserResponse,
 } from '@ticketforge/shared/api-interfaces';
-import { Observable, of } from 'rxjs';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly orm: MikroORM,
-  ) {}
+  constructor(private readonly orm: MikroORM) {}
 
   private readonly userRepository = this.orm.em.getRepository(UserEntity);
 
   @UseRequestContext()
   async createUser(createUserDto: CreateUserDto) {
-    const { firstName, lastName, email, password } = createUserDto;
-
     const user = new UserEntity();
-    user.firstName = firstName;
-    user.lastName = lastName;
-    user.email = email;
-    user.password = password;
- 
-
+    Object.assign(user, createUserDto);
     await this.userRepository.persist(user).flush();
-
-    return {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        created_at: user.created_at,
-        updated_at: user.updated_at,
-    } as UserResponse;
+    delete user.password;
+    return user as UserResponse;
   }
 
-  getUser(id: string): Observable<UserResponse> {
-    return of({
-      id: id,
-      email: 'john.doe@mail.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
+  @UseRequestContext()
+  async getUser(id: string) {
+    const user = await this.userRepository.findOne(id);
+    if(!user) {
+      return new NotFoundException("User not found");
+    }
+    delete user.password;
+    return user as UserResponse;
   }
 
-  deleteUser(id: string): Observable<boolean> {
-    return of(true);
+  @UseRequestContext()
+  async deleteUser(id: string) {
+    const user = this.userRepository.getReference(id);
+    if(!user) {
+      return new NotFoundException("User not found");
+    }
+    await this.userRepository.remove(user).flush();
+    return true;
   }
 
-  updateUser(updateUserDto: UpdateUserDto): Observable<UserResponse> {
-    return of({
-      id: '1',
-      email: updateUserDto.email,
-      firstName: updateUserDto.firstName,
-      lastName: updateUserDto.lastName,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
+  @UseRequestContext()
+  async updateUser(updateUserDto: UpdateUserDto) {
+    const ref = this.userRepository.getReference(updateUserDto.id);
+    if(!ref) {
+      return new NotFoundException("User not found");
+    }
+    Object.assign(ref, updateUserDto);
+    await this.userRepository.flush();
+    delete ref.password;
+    return ref;
   }
 }

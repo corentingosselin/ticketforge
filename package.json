@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nx run-many --target=serve --projects=api-gateway,auth-service,event-service,ticket-service,user-service --parallel --maxParallel=4",
-    "docker": "docker-compose -f docker/docker-compose.yml --env-file docker/.docker-compose.env up -d --force-recreate",
-    "db:init": "npx mikro-orm schema:create --run"
+    "docker": "docker-compose -f docker/docker-compose.yml -f docker/docker-compose.event-service.yml -f docker/docker-compose.ticket-service.yml -f docker/docker-compose.user-service.yml -f docker/docker-compose.flyway.yml --env-file docker/.docker-compose.env up -d --force-recreate",
+    "migration:generate": "npx mikro-orm migration:create --initial"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +20,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "amqp-connection-manager": "^4.1.11",
     "amqplib": "^0.10.3",
+    "argon2": "^0.30.3",
     "axios": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -58,7 +59,7 @@
     "useTsNode": true,
     "tsConfigPath": "tsconfig.orm.json",
     "configPaths": [
-      "./libs/ticket-service/core/src/mikro-orm.config.ts"
+      "./libs/event-service/core/src/mikro-orm.config.ts"
     ]
   }
 }

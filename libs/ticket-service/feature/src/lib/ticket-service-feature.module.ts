@@ -1,18 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TicketService } from '@ticketforge/ticket-service/data-access';
 import { TicketController } from './ticket.controller';
 import { SharedMessageBrokerModule } from '@ticketforge/shared/message-broker';
+import { TicketServiceDataAccessModule } from '@ticketforge/ticket-service/data-access';
 
 @Module({
-  controllers: [
-    TicketController
-  ],
-  providers: [
-    TicketService
-  ],
+  controllers: [TicketController],
+  providers: [],
   exports: [],
-  imports: [
-    SharedMessageBrokerModule
-  ]
+  imports: [SharedMessageBrokerModule, TicketServiceDataAccessModule],
 })
 export class TicketServiceFeatureModule {}

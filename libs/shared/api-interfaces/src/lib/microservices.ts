@@ -1,5 +1,5 @@
-export const AUTH_SERVICE = 'AUTH_SERVICE';
-export const EVENT_SERVICE = 'EVENT_SERVICE';
+export const AUTH_SERVICE = 'AUTH';
+export const EVENT_SERVICE = 'EVENT';
 export const API_GATEWAY = 'API_GATEWAY';
-export const TICKET_SERVICE = 'TICKET_SERVICE';
-export const USER_SERVICE = 'USER_SERVICE';
+export const TICKET_SERVICE = 'TICKET';
+export const USER_SERVICE = 'USER';

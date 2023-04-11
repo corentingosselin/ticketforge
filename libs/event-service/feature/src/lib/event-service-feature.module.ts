@@ -1,18 +1,17 @@
 import { Module } from '@nestjs/common';
-import { EventService } from '@ticketforge/event-service/data-access';
-import { EventController } from './event.controller';
+import { EventServiceDataAccessModule } from '@ticketforge/event-service/data-access';
 import { SharedMessageBrokerModule } from '@ticketforge/shared/message-broker';
+import { EventController } from './event.controller';
 
 @Module({
   controllers: [
     EventController
   ],
-  providers: [
-    EventService
-  ],
+  providers: [],
   exports: [],
   imports: [
-    SharedMessageBrokerModule
+    SharedMessageBrokerModule,
+    EventServiceDataAccessModule
   ]
   
 })

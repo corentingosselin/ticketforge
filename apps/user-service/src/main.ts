@@ -16,8 +16,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   const msgBrokerService = app.get(MessageBrokerService);
-  const clientOtions = msgBrokerService.getOptions(USER_SERVICE);
-  app.connectMicroservice(clientOtions);
+  app.connectMicroservice(msgBrokerService.getOptions(USER_SERVICE));
   await app.startAllMicroservices();
 
   const config = app.get(ConfigService);

@@ -11,9 +11,8 @@ export class MessageBrokerService {
       transport: Transport.RMQ,
       options: {
         urls: [this.configService.get<string>('MESSAGE_BROKER_URI')],
-        queue: this.configService.get<string>(`MESSAGE_BROKER_${queue}_QUEUE`),
+        queue: this.configService.get<string>(`MB_${queue}_QUEUE`),
         noAck,
-        persistent: true,
       },
     };
   }

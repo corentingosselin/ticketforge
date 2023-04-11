@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  flyway_user-service-db:
+    image: flyway/flyway:latest
+    container_name: flyway_user-service-db
+    command: -url=jdbc:mysql://user-service-db:3306/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true -user=${MYSQL_USER} -password=${MYSQL_PASSWORD} -connectRetries=60 -connectRetriesInterval=5 migrate
+    volumes:
+      - ../apps/user-service/migrations:/flyway/sql
+    depends_on:
+      - user-service-db
+
+  flyway_event-service-db:
+    image: flyway/flyway:latest
+    container_name: flyway_event-service-db
+    command: -url=jdbc:mysql://event-service-db:3306/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true -user=${MYSQL_USER} -password=${MYSQL_PASSWORD} -connectRetries=60 -connectRetriesInterval=5 migrate
+    volumes:
+      - ../apps/event-service/migrations:/flyway/sql
+    depends_on:
+      - event-service-db
+
+
+  flyway_ticket-service-db:
+    image: flyway/flyway:latest
+    container_name: flyway_ticket-service-db
+    command: -url=jdbc:mysql://ticket-service-db:3306/${MYSQL_DATABASE}?allowPublicKeyRetrieval=true -user=${MYSQL_USER} -password=${MYSQL_PASSWORD} -connectRetries=60 -connectRetriesInterval=5 migrate
+    volumes:
+      - ../apps/ticket-service/migrations:/flyway/sql
+    depends_on:
+      - ticket-service-db
+

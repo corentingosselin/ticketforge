@@ -1,45 +1,52 @@
-import { Injectable } from "@nestjs/common";
-import { CreateEventDto, EventResponse, UpdateEventDto } from "@ticketforge/shared/api-interfaces";
-import { Observable, of } from "rxjs";
+import { MikroORM, UseRequestContext } from '@mikro-orm/core';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  CreateEventDto,
+  EventResponse,
+  UpdateEventDto,
+} from '@ticketforge/shared/api-interfaces';
+import { EventEntity } from './entities/event.entity';
 
 @Injectable()
 export class EventService {
+  constructor(private readonly orm: MikroORM) {}
 
-    createEvent(createEventDto: CreateEventDto) : Observable<EventResponse> {
-        return of({
-            id: '1',
-            name: createEventDto.name,
-            description: createEventDto.description,
-            date: createEventDto.date,
-            created_at: new Date(),
-            updated_at: new Date()
-        });
+  private readonly eventRepository = this.orm.em.getRepository(EventEntity);
+
+  @UseRequestContext()
+  async createEvent(createEventDto: CreateEventDto) {
+    const event = new EventEntity();
+    Object.assign(event, createEventDto);
+    await this.eventRepository.persist(event).flush();
+    return event as EventResponse;
+  }
+
+  @UseRequestContext()
+  async getEvent(id: string) {
+    const event = await this.eventRepository.findOne(id);
+    if (!event) {
+      return new NotFoundException('Event not found');
     }
+    return event as EventResponse;
+  }
 
-    getEvent(id: string) : Observable<EventResponse> {
-        return of({
-            id,
-            name: 'test',
-            description: 'test',
-            date: new Date(),
-            created_at: new Date(),
-            updated_at: new Date()
-        });
+  async deleteEvent(id: string) {
+    const event = this.eventRepository.getReference(id);
+    if (!event) {
+      return new NotFoundException('Event not found');
     }
+    await this.eventRepository.remove(event).flush();
+    return true;
+  }
 
-    deleteEvent(id: string) : Observable<boolean> {
-        return of(true);
+  @UseRequestContext()
+  async updateEvent(updateEventDto: UpdateEventDto) {
+    const ref = this.eventRepository.getReference(updateEventDto.id);
+    if (!ref) {
+      return new NotFoundException('Event not found');
     }
-
-    updateEvent(updateEventDto: UpdateEventDto) : Observable<EventResponse> {
-        return of({
-            id: '1',
-            name: updateEventDto.name,
-            description: updateEventDto.description,
-            date: updateEventDto.date,
-            created_at: new Date(),
-            updated_at: new Date()    
-        });
-    }
-
+    Object.assign(ref, updateEventDto);
+    await this.eventRepository.flush();
+    return ref;
+  }
 }

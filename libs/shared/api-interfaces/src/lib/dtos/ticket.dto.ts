@@ -20,6 +20,8 @@ export class CreateTicketDto implements Omit<Ticket, DEFAULT_OMIT> {
 
 export class UpdateTicketDto implements Partial<CreateTicketDto> {
   @IsString()
+  id!: string;
+  @IsString()
   name?: string;
   @IsString()
   title?: string;

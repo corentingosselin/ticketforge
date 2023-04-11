@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  user-service-db:
+    container_name: 'user-service-db'
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_USER=${MYSQL_USER}
+    ports:
+      - '${USER_SERVICE_DB_PORT}:${USER_SERVICE_DB_PORT}'
+    volumes:
+      - user-service-db-volume:/var/lib/mysql
+volumes:
+  user-service-db-volume:

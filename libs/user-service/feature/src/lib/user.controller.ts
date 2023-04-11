@@ -18,17 +18,17 @@ export class UserController {
   }
 
   @MessagePattern(UPDATE_USER_CMD)
-  async updateUser(@Payload() updateUserDto: UpdateUserDto) {
+  updateUser(@Payload() updateUserDto: UpdateUserDto) {
     return this.userService.updateUser(updateUserDto);
   }
 
   @MessagePattern(GET_USER_CMD)
-  async getUser(@Payload() id: string) {
+  getUser(@Payload() id: string) {
     return this.userService.getUser(id);
   }
 
   @MessagePattern(DELETE_USER_CMD)
-  async deleteUser(@Payload() id: string) {
+  deleteUser(@Payload() id: string) {
     return this.userService.deleteUser(id);
   }
 }

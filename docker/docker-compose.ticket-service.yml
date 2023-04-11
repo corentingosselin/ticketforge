@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  ticket-service-db:
+    container_name: 'ticket-service-db'
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_USER=${MYSQL_USER}
+    ports:
+      - '${TICKET_SERVICE_DB_PORT}:3306'
+    volumes:
+      - ticket-service-db-volume:/var/lib/mysql
+volumes:
+  ticket-service-db-volume:
