@@ -1,4 +1,5 @@
-import { User } from "../interfaces/user.interface";
+import { User } from '../interfaces/user.interface';
 
-export type UserResponse = Omit<User,'password'>
-    
+export type UserResponse = User;
+export type UserAccountResponse = Omit<User, 'password'>;
+

@@ -21,6 +21,7 @@ import { CreateTicketDto, UpdateTicketDto } from '@ticketforge/shared/api-interf
   
     @Put(':id')
     async update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
+      updateTicketDto.id = id;
       return this.ticketService.updateTicket(updateTicketDto);
     }
   

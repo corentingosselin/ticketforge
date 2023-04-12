@@ -7,6 +7,9 @@ export class EventEntity extends BaseEntity implements Event {
   name!: string;
 
   @Property()
+  city!: string;
+
+  @Property()
   description!: string;
 
   @Property()

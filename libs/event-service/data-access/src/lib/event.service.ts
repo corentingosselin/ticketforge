@@ -1,5 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import {
   CreateEventDto,
   EventResponse,
@@ -15,6 +16,7 @@ export class EventService {
 
   @UseRequestContext()
   async createEvent(createEventDto: CreateEventDto) {
+    throw new RpcException(new NotFoundException(`Event not found`));
     const event = new EventEntity();
     Object.assign(event, createEventDto);
     await this.eventRepository.persist(event).flush();
@@ -25,7 +27,7 @@ export class EventService {
   async getEvent(id: string) {
     const event = await this.eventRepository.findOne(id);
     if (!event) {
-      return new NotFoundException('Event not found');
+      throw new RpcException(new NotFoundException(`Event  not found`));
     }
     return event as EventResponse;
   }
@@ -33,7 +35,7 @@ export class EventService {
   async deleteEvent(id: string) {
     const event = this.eventRepository.getReference(id);
     if (!event) {
-      return new NotFoundException('Event not found');
+      throw new RpcException(new NotFoundException(`Event  not found`));
     }
     await this.eventRepository.remove(event).flush();
     return true;
@@ -43,7 +45,7 @@ export class EventService {
   async updateEvent(updateEventDto: UpdateEventDto) {
     const ref = this.eventRepository.getReference(updateEventDto.id);
     if (!ref) {
-      return new NotFoundException('Event not found');
+      throw new RpcException(new NotFoundException(`Event  not found`));
     }
     Object.assign(ref, updateEventDto);
     await this.eventRepository.flush();

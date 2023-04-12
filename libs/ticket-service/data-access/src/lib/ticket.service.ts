@@ -1,6 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
   CreateTicketDto,
   EVENT_SERVICE,
@@ -33,11 +33,11 @@ export class TicketService {
 
     //check if user exist
     const user = this.userService.send(GET_USER_CMD, ticket.user_id);
-    if (!user) return new NotFoundException('User not found');
+    if (!user) throw new RpcException(new NotFoundException(`User  not found`));
 
     //check if event exist
     const event = this.eventService.send(EVENT_SERVICE, ticket.event_id);
-    if (!event) return new NotFoundException('Event not found');
+    if (!event) throw new RpcException(new NotFoundException(`Event  not found`));
 
     return {
       id: ticket.id,
@@ -55,7 +55,7 @@ export class TicketService {
   async getTicket(id: string) {
     const ticket = await this.ticketRepository.findOne(id);
     if (!ticket) {
-      return new NotFoundException('Ticket not found');
+      throw new RpcException(new NotFoundException(`Ticket  not found`));
     }
     return ticket as TicketResponse;
   }
@@ -64,7 +64,7 @@ export class TicketService {
   async deleteTicket(id: string) {
     const ticket = this.ticketRepository.getReference(id);
     if (!ticket) {
-      return new NotFoundException('Ticket not found');
+      throw new RpcException(new NotFoundException(`Ticket  not found`));
     }
     await this.ticketRepository.remove(ticket).flush();
     return true;
@@ -74,7 +74,7 @@ export class TicketService {
   async updateTicket(updateTicketDto: UpdateTicketDto) {
     const ref = this.ticketRepository.getReference(updateTicketDto.id);
     if (!ref) {
-      return new NotFoundException('Ticket not found');
+      throw new RpcException(new NotFoundException(`Ticket  not found`));
     }
     ref.name = updateTicketDto.name;
     ref.description = updateTicketDto.description;

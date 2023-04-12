@@ -8,7 +8,7 @@ import {
   UserResponse,
 } from '@ticketforge/shared/api-interfaces';
 import { CREATE_USER_CMD, DELETE_USER_CMD, GET_USER_CMD, UPDATE_USER_CMD } from '@ticketforge/shared/message-broker';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -20,8 +20,8 @@ export class UserService {
     return this.userService.send(CREATE_USER_CMD, createUserDto);
   }
 
-  getUser(id: string) : Observable<User> {
-    return this.userService.send(GET_USER_CMD, id);
+  getUser(id: string) : Promise<UserResponse> {
+    return lastValueFrom(this.userService.send(GET_USER_CMD, id));
   }
 
   deleteUser(id: string) : Observable<boolean> {

@@ -1,4 +1,3 @@
-import { UserResponse } from "../responses/user.response";
 import { Entity } from "./entity.interface";
 
 export interface User extends Entity {
@@ -7,8 +6,11 @@ export interface User extends Entity {
     lastName: string;
     password: string;
   }
-  
-  export interface UserSession {
-    tokken: string;
-    user: UserResponse;
+
+  export interface JwtUserSession {
+    userId: number;
+    email: string;
+    exp?: number;
+    iat?: number;
   }
+  

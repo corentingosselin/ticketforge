@@ -45,6 +45,7 @@
       "@ticketforge/shared/message-broker": [
         "libs/shared/message-broker/src/index.ts"
       ],
+      "@ticketforge/shared/network": ["libs/shared/network/src/index.ts"],
       "@ticketforge/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@ticketforge/ticket-service/core": [
         "libs/ticket-service/core/src/index.ts"

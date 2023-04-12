@@ -7,6 +7,8 @@ export class CreateEventDto implements Omit<Event, DEFAULT_OMIT> {
   @IsString()
   name!: string;
   @IsString()
+  city!: string;
+  @IsString()
   description!: string;
   @IsDateString()
   date!: Date;
@@ -17,6 +19,8 @@ export class CreateEventDto implements Omit<Event, DEFAULT_OMIT> {
 export class UpdateEventDto implements Partial<CreateEventDto> {
   @IsString()
   id!: string;
+  @IsString()
+  city?: string;
   @IsString()
   name?: string;
   @IsString()

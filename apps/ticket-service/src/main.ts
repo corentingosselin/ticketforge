@@ -26,7 +26,7 @@ async function bootstrap() {
       disableErrorMessages: config.get('NODE_ENV') === 'production',
       stopAtFirstError: true,
       forbidUnknownValues: true,
-      skipMissingProperties: true,
+      skipMissingProperties: false,
       whitelist: true,
       forbidNonWhitelisted: true,
     }),

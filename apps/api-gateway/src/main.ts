@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
+import { RpcToHttpExceptionFilter } from '@ticketforge/shared/network';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const config = app.get(ConfigService);
 
+  app.useGlobalFilters(new RpcToHttpExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -22,12 +24,11 @@ async function bootstrap() {
       disableErrorMessages: config.get('NODE_ENV') === 'production',
       stopAtFirstError: true,
       forbidUnknownValues: true,
-      skipMissingProperties: true,
+      skipMissingProperties: false, // if value is missing, the validator does not check
       whitelist: true,
       forbidNonWhitelisted: true,
-    }),
+    })
   );
-
 
   const port = config.get('API_GATEWAY_PORT') || 3000;
   await app.listen(port);

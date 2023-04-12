@@ -6,6 +6,6 @@
     "types": ["node"],
     "target": "es6"
   },
-  "include": ["src/**/*.ts", "../network/src/lib/rpc.error.pipe.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

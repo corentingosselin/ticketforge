@@ -1,42 +1,70 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
   CreateUserDto,
   LoginUserDto,
   USER_SERVICE,
+  User,
+  UserAccountResponse,
   UserResponse,
-  UserSessionResponse
+  UserSessionResponse,
 } from '@ticketforge/shared/api-interfaces';
-import { CREATE_USER_CMD } from '@ticketforge/shared/message-broker';
-import { Observable, of } from 'rxjs';
+import {
+  CREATE_USER_CMD,
+  FIND_USER_BY_EMAIL,
+} from '@ticketforge/shared/message-broker';
+import { RpcService } from '@ticketforge/shared/network';
+import { verify } from 'argon2';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
-
-constructor(
-  @Inject(USER_SERVICE) private readonly userService: ClientProxy
-) {
-
-}
-
-  login(loginDto: LoginUserDto) {
-    const userSession: UserSessionResponse = {
-      user: {
-        id: '1',
-        lastName: 'test',
-        firstName: 'test',
-        email: loginDto.email,
-        updated_at: new Date(),
-        created_at: new Date(),
-      },
-      tokken: 'token',
-    };
-
-    return of(userSession);
+  private readonly rpcService: RpcService;
+  constructor(
+    @Inject(USER_SERVICE) private readonly userService: ClientProxy,
+    private readonly jwtService: JwtService
+  ) {
+    this.rpcService = new RpcService(this.userService);
   }
 
-  register(registerDto: CreateUserDto) {
-    const userResponse : Observable<UserResponse> = this.userService.send(CREATE_USER_CMD, registerDto); 
-    return userResponse;
+  async validateUser(loginDto: LoginUserDto): Promise<UserAccountResponse> {
+    const user: UserResponse = await lastValueFrom(
+      this.userService.send(FIND_USER_BY_EMAIL, loginDto.email)
+    );
+    if (user && (await verify(user.password, loginDto.password))) {
+      delete user.password;
+      return user;
+    }
+    return null;
+  }
+
+  async generateJwtToken(
+    user: UserAccountResponse
+  ): Promise<UserSessionResponse> {
+    const payload = { email: user.email, sub: user.id };
+    return {
+      token: this.jwtService.sign(payload),
+      user,
+    } as UserSessionResponse;
+  }
+
+  async login(loginDto: LoginUserDto) {
+    const user = await this.validateUser(loginDto);
+    if (!user) {
+      throw new RpcException(
+        new UnauthorizedException('Invalid email or password.')
+      );
+    }
+
+    return this.generateJwtToken(user);
+  }
+
+  async register(registerDto: CreateUserDto) {
+    const user: User = await this.rpcService.sendWithRpcExceptionHandler<User>(
+      CREATE_USER_CMD,
+      registerDto
+    );
+    return this.generateJwtToken(user);
   }
 }

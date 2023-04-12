@@ -1,12 +1,12 @@
 import {
-    Controller,
-    Post,
-    Body,
-    Get,
-    Put,
-    Delete,
-    Param,
-  } from '@nestjs/common';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { EventService } from '@ticketforge/api-gateway/data-access';
 import { CreateEventDto, UpdateEventDto } from '@ticketforge/shared/api-interfaces';
   
@@ -16,11 +16,12 @@ import { CreateEventDto, UpdateEventDto } from '@ticketforge/shared/api-interfac
   
     @Post()
     async create(@Body() createEventDto: CreateEventDto) {
-      return this.eventService.createEvent(createEventDto);
+     return this.eventService.createEvent(createEventDto);
     }
   
     @Put(':id')
     async update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
+      updateEventDto.id = id;
       return this.eventService.updateEvent(updateEventDto);
     }
   

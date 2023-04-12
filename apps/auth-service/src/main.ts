@@ -6,10 +6,10 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
-import { MessageBrokerService } from '@ticketforge/shared/message-broker';
 import { AUTH_SERVICE } from '@ticketforge/shared/api-interfaces';
+import { MessageBrokerService } from '@ticketforge/shared/message-broker';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,17 +27,15 @@ async function bootstrap() {
       disableErrorMessages: config.get('NODE_ENV') === 'production',
       stopAtFirstError: true,
       forbidUnknownValues: true,
-      skipMissingProperties: true,
+      skipMissingProperties: false,
       whitelist: true,
       forbidNonWhitelisted: true,
-    }),
+    })
   );
 
   const port = config.get('AUTH_SERVICE_PORT') || 3300;
   await app.listen(port);
-  Logger.log(
-    `🚀 Auth Service is running on: http://localhost:${port}`
-  );
+  Logger.log(`🚀 Auth Service is running on: http://localhost:${port}`);
 }
 
 bootstrap();

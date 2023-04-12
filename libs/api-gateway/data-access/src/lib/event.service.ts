@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateEventDto,
   EVENT_SERVICE,
+  EventResponse,
   UpdateEventDto,
 } from '@ticketforge/shared/api-interfaces';
 import {
@@ -11,16 +12,21 @@ import {
   GET_EVENT_CMD,
   UPDATE_EVENT_CMD,
 } from '@ticketforge/shared/message-broker';
+import { RpcService } from '@ticketforge/shared/network';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class EventService {
+
+  private readonly rpcService: RpcService;
   constructor(
     @Inject(EVENT_SERVICE) private readonly eventService: ClientProxy
-  ) {}
+  ) {
+    this.rpcService = new RpcService(this.eventService);
+  }
 
-  createEvent(createEventDto: CreateEventDto): Observable<Event> {
-    return this.eventService.send(CREATE_EVENT_CMD, createEventDto);
+  createEvent(createEventDto: CreateEventDto){
+    return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(CREATE_EVENT_CMD, createEventDto);
   }
 
   updateEvent(updateEventDto: UpdateEventDto): Observable<Event> {

@@ -8,7 +8,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { UserService } from '@ticketforge/api-gateway/data-access';
-import { CreateUserDto, UpdateUserDto } from '@ticketforge/shared/api-interfaces';
+import { CreateUserDto, UpdateUserDto, UserAccountResponse } from '@ticketforge/shared/api-interfaces';
 
 @Controller('user')
 export class UserController {
@@ -27,7 +27,9 @@ export class UserController {
 
   @Get(':id')
   async get(@Param('id') id: string) {
-    return this.userService.getUser(id);
+    const user = await this.userService.getUser(id);
+    delete user.password;
+    return user as UserAccountResponse;
   }
 
   @Delete(':id')

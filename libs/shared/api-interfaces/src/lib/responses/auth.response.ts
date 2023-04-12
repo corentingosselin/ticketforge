@@ -1,3 +1,3 @@
-import { UserSession } from "../interfaces/user.interface";
+import { UserAccountResponse } from "./user.response";
 
-export type UserSessionResponse = UserSession
+export type UserSessionResponse = { token: string; user: UserAccountResponse };
