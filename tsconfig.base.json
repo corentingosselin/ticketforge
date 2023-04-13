@@ -23,6 +23,7 @@
       "@ticketforge/api-gateway/feature": [
         "libs/api-gateway/feature/src/index.ts"
       ],
+      "@ticketforge/api-gateway/utils": ["libs/api-gateway/utils/src/index.ts"],
       "@ticketforge/auth-service/core": ["libs/auth-service/core/src/index.ts"],
       "@ticketforge/auth-service/data-access": [
         "libs/auth-service/data-access/src/index.ts"

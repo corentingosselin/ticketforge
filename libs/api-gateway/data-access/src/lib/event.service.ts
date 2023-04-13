@@ -13,11 +13,9 @@ import {
   UPDATE_EVENT_CMD,
 } from '@ticketforge/shared/message-broker';
 import { RpcService } from '@ticketforge/shared/network';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class EventService {
-
   private readonly rpcService: RpcService;
   constructor(
     @Inject(EVENT_SERVICE) private readonly eventService: ClientProxy
@@ -25,19 +23,31 @@ export class EventService {
     this.rpcService = new RpcService(this.eventService);
   }
 
-  createEvent(createEventDto: CreateEventDto){
-    return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(CREATE_EVENT_CMD, createEventDto);
+  createEvent(createEventDto: CreateEventDto) {
+    return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
+      CREATE_EVENT_CMD,
+      createEventDto
+    );
   }
 
-  updateEvent(updateEventDto: UpdateEventDto): Observable<Event> {
-    return this.eventService.send(UPDATE_EVENT_CMD, updateEventDto);
+  updateEvent(updateEventDto: UpdateEventDto) {
+    return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
+      UPDATE_EVENT_CMD,
+      updateEventDto
+    );
   }
 
-  getEvent(id: string): Observable<Event> {
-    return this.eventService.send(GET_EVENT_CMD, id);
+  getEvent(id: string) {
+    return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
+      GET_EVENT_CMD,
+      id
+    );
   }
 
-  deleteEvent(id: string): Observable<boolean> {
-    return this.eventService.send(DELETE_EVENT_CMD, id);
+  deleteEvent(id: string) {
+    return this.rpcService.sendWithRpcExceptionHandler<boolean>(
+      DELETE_EVENT_CMD,
+      id
+    );
   }
 }

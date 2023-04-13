@@ -29,9 +29,8 @@ export class AuthService {
   }
 
   async validateUser(loginDto: LoginUserDto): Promise<UserAccountResponse> {
-    const user: UserResponse = await lastValueFrom(
-      this.userService.send(FIND_USER_BY_EMAIL, loginDto.email)
-    );
+    const user = await this.rpcService.sendWithRpcExceptionHandler<User>(FIND_USER_BY_EMAIL,loginDto.email);
+    console.log(user);
     if (user && (await verify(user.password, loginDto.password))) {
       delete user.password;
       return user;

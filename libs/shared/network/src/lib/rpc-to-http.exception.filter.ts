@@ -27,6 +27,7 @@ export class RpcToHttpExceptionFilter implements ExceptionFilter {
       message = error;
     }
 
+    console.log('RpcToHttpExceptionFilter', status, message);
     return response.status(status).json({
       statusCode: status,
       message,

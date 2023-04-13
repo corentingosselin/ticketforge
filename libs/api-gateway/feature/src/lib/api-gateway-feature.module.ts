@@ -6,6 +6,8 @@ import { AuthController } from './auth.controller';
 import { EventController } from './event.controller';
 import { TicketController } from './ticket.controller';
 import { UserController } from './user.controller';
+import { JwtAuthGuard } from '@ticketforge/api-gateway/utils';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [
@@ -14,10 +16,16 @@ import { UserController } from './user.controller';
     TicketController,
     UserController,
   ],
-  providers: [],
+  providers: [
+    JwtAuthGuard,
+  ],
   exports: [],
   imports: [
     ApiGatewayDataAccessModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '30m' },
+    }),
   ],
 })
 export class ApiGatewayFeatureModule {}

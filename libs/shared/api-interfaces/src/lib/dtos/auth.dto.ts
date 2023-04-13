@@ -1,4 +1,4 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 import { User } from '../interfaces/user.interface';
 
 type DEFAULT_OMIT =
@@ -12,5 +12,6 @@ type DEFAULT_OMIT =
 export class LoginUserDto implements Omit<User, DEFAULT_OMIT> {
   @IsEmail()
   email!: string;
+  @IsString()
   password!: string;
 }

@@ -6,14 +6,17 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { EventService } from '@ticketforge/api-gateway/data-access';
+import { JwtAuthGuard } from '@ticketforge/api-gateway/utils';
 import { CreateEventDto, UpdateEventDto } from '@ticketforge/shared/api-interfaces';
   
   @Controller('event')
   export class EventController {
     constructor(private readonly eventService: EventService) {}
   
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() createEventDto: CreateEventDto) {
      return this.eventService.createEvent(createEventDto);

@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
-import { SharedNetworkModule } from '@ticketforge/shared/network';
-import { AuthService } from './auth.service';
-import { EventService } from './event.service';
-import { TicketService } from './ticket.service';
-import { UserService } from './user.service';
-import { SharedMessageBrokerModule } from '@ticketforge/shared/message-broker';
 import {
   AUTH_SERVICE,
   EVENT_SERVICE,
   TICKET_SERVICE,
   USER_SERVICE,
 } from '@ticketforge/shared/api-interfaces';
+import { SharedMessageBrokerModule } from '@ticketforge/shared/message-broker';
+import { AuthService } from './auth.service';
+import { EventService } from './event.service';
+import { TicketService } from './ticket.service';
+import { UserService } from './user.service';
 
 @Module({
   controllers: [],
