@@ -4,7 +4,7 @@ import { IsPasswordSecure, Match } from '@ticketforge/shared/utils';
 
 type DEFAULT_OMIT = 'created_at' | 'updated_at' | 'id';
 
-export class CreateUserDto implements Omit<User, DEFAULT_OMIT> {
+export class CreateUserDto implements Omit<User, DEFAULT_OMIT | 'role'> {
   @IsString()
   firstName!: string;
 
@@ -24,10 +24,9 @@ export class CreateUserDto implements Omit<User, DEFAULT_OMIT> {
 }
 
 export class UpdateUserDto implements Partial<CreateUserDto> {
-
   @IsString()
   id!: string;
-  
+
   @IsString()
   firstName?: string;
 

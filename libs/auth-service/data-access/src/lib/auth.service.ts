@@ -7,8 +7,7 @@ import {
   USER_SERVICE,
   User,
   UserAccountResponse,
-  UserResponse,
-  UserSessionResponse,
+  UserSessionResponse
 } from '@ticketforge/shared/api-interfaces';
 import {
   CREATE_USER_CMD,
@@ -16,7 +15,6 @@ import {
 } from '@ticketforge/shared/message-broker';
 import { RpcService } from '@ticketforge/shared/network';
 import { verify } from 'argon2';
-import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +28,6 @@ export class AuthService {
 
   async validateUser(loginDto: LoginUserDto): Promise<UserAccountResponse> {
     const user = await this.rpcService.sendWithRpcExceptionHandler<User>(FIND_USER_BY_EMAIL,loginDto.email);
-    console.log(user);
     if (user && (await verify(user.password, loginDto.password))) {
       delete user.password;
       return user;

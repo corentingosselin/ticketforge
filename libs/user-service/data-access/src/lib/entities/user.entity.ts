@@ -1,5 +1,5 @@
 import { BeforeCreate, BeforeUpdate, Entity, Property } from '@mikro-orm/core';
-import { BaseEntity, User } from '@ticketforge/shared/api-interfaces';
+import { BaseEntity, User, UserRole } from '@ticketforge/shared/api-interfaces';
 import argon2 from 'argon2';
 
 
@@ -17,6 +17,9 @@ export class UserEntity extends BaseEntity implements User {
 
   @Property()
   password: string;
+
+  @Property()
+  role: UserRole = UserRole.USER;
   
   @BeforeCreate()
   @BeforeUpdate()

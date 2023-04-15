@@ -1,8 +1,8 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, HttpException } from '@nestjs/common';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { CreateUserDto, UpdateUserDto } from '@ticketforge/shared/api-interfaces';
 import {
-  CREATE_USER_CMD, DELETE_USER_CMD, GET_USER_CMD, UPDATE_USER_CMD
+  CREATE_USER_CMD, DELETE_USER_CMD, FIND_USER_BY_EMAIL, GET_USER_CMD, UPDATE_USER_CMD
 } from '@ticketforge/shared/message-broker';
 import { UserService } from '@ticketforge/user-service/data-access';
 
@@ -31,4 +31,10 @@ export class UserController {
   deleteUser(@Payload() id: string) {
     return this.userService.deleteUser(id);
   }
+
+  @MessagePattern(FIND_USER_BY_EMAIL)
+  findUserByEmail(@Payload() email: string) {
+    return this.userService.findUserByEmail(email);
+  }
+  
 }

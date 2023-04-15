@@ -16,7 +16,6 @@ export class EventService {
 
   @UseRequestContext()
   async createEvent(createEventDto: CreateEventDto) {
-    throw new RpcException(new NotFoundException(`Event not found`));
     const event = new EventEntity();
     Object.assign(event, createEventDto);
     await this.eventRepository.persist(event).flush();

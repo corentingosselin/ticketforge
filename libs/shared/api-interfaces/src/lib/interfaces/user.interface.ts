@@ -5,6 +5,13 @@ export interface User extends Entity {
     firstName: string;
     lastName: string;
     password: string;
+    role: UserRole;
+  }
+
+  export enum UserRole {
+    ADMIN = 'admin',
+    OPERATOR = 'operator',
+    USER = 'user'
   }
 
   export interface JwtUserSession {

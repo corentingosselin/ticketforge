@@ -61,4 +61,10 @@ export class UserService {
     delete ref.password;
     return ref;
   }
+
+  @UseRequestContext()
+  async findUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({ email });
+    return user as UserResponse;
+  }
 }
