@@ -3,11 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
   CreateUserDto,
+  JwtUserSession,
   LoginUserDto,
   USER_SERVICE,
   User,
   UserAccountResponse,
-  UserSessionResponse
+  UserSessionResponse,
 } from '@ticketforge/shared/api-interfaces';
 import {
   CREATE_USER_CMD,
@@ -27,7 +28,10 @@ export class AuthService {
   }
 
   async validateUser(loginDto: LoginUserDto): Promise<UserAccountResponse> {
-    const user = await this.rpcService.sendWithRpcExceptionHandler<User>(FIND_USER_BY_EMAIL,loginDto.email);
+    const user = await this.rpcService.sendWithRpcExceptionHandler<User>(
+      FIND_USER_BY_EMAIL,
+      loginDto.email
+    );
     if (user && (await verify(user.password, loginDto.password))) {
       delete user.password;
       return user;
@@ -38,7 +42,11 @@ export class AuthService {
   async generateJwtToken(
     user: UserAccountResponse
   ): Promise<UserSessionResponse> {
-    const payload = { email: user.email, sub: user.id };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      role: user.role,
+    } as JwtUserSession;
     return {
       token: this.jwtService.sign(payload),
       user,

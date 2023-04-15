@@ -6,9 +6,11 @@ import {
   Put,
   Delete,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '@ticketforge/api-gateway/data-access';
-import { CreateUserDto, UpdateUserDto, UserAccountResponse } from '@ticketforge/shared/api-interfaces';
+import { Roles, RolesGuard } from '@ticketforge/api-gateway/utils';
+import { CreateUserDto, UpdateUserDto, UserAccountResponse, UserRole } from '@ticketforge/shared/api-interfaces';
 
 @Controller('user')
 export class UserController {
@@ -25,6 +27,8 @@ export class UserController {
     return this.userService.updateUser(updateUserDto);
   }
 
+  @Roles(UserRole.ADMIN)
+  @UseGuards(RolesGuard)
   @Get(':id')
   async get(@Param('id') id: string) {
     const user = await this.userService.getUser(id);

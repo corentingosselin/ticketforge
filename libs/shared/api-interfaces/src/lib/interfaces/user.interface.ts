@@ -15,9 +15,10 @@ export interface User extends Entity {
   }
 
   export interface JwtUserSession {
-    userId: number;
+    sub: string;
     email: string;
     exp?: number;
     iat?: number;
+    role: UserRole;
   }
   
