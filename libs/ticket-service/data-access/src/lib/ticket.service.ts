@@ -9,24 +9,31 @@ import {
   TicketResponse,
   USER_SERVICE,
   UpdateTicketDto,
+  UserResponse,
 } from '@ticketforge/shared/api-interfaces';
-import { GET_EVENT_CMD, GET_USER_CMD, UPDATE_EVENT_CMD } from '@ticketforge/shared/message-broker';
+import {
+  GET_EVENT_CMD,
+  GET_USER_CMD,
+  UPDATE_EVENT_CMD,
+} from '@ticketforge/shared/message-broker';
 import { TicketEntity } from './entities/ticket.entity';
 import { delay, lastValueFrom, of } from 'rxjs';
 import { RpcService } from '@ticketforge/shared/network';
+import { MailService } from './mail-service';
 
 @Injectable()
 export class TicketService {
-
-  private readonly rpcService: RpcService;
+  private readonly rpcEventService: RpcService;
+  private readonly rpcUserService: RpcService;
 
   constructor(
     private readonly orm: MikroORM,
+    private readonly mailService: MailService,
     @Inject(USER_SERVICE) private readonly userService: ClientProxy,
-    @Inject(EVENT_SERVICE) private readonly eventService: ClientProxy,
+    @Inject(EVENT_SERVICE) private readonly eventService: ClientProxy
   ) {
-    this.rpcService = new RpcService(this.eventService);
-
+    this.rpcEventService = new RpcService(this.eventService);
+    this.rpcUserService = new RpcService(this.userService);
   }
 
   private readonly ticketRepository = this.orm.em.getRepository(TicketEntity);
@@ -37,9 +44,8 @@ export class TicketService {
     const user = this.userService.send(GET_USER_CMD, createTicketDto.user_id);
     if (!user) throw new RpcException(new NotFoundException(`User not found`));
 
-
     //check if event exist
-    await this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
+    await this.rpcEventService.sendWithRpcExceptionHandler<EventResponse>(
       GET_EVENT_CMD,
       createTicketDto.event_id
     );
@@ -70,10 +76,10 @@ export class TicketService {
 
     const updateEvenDto = {
       id: ticket.event_id,
-      ticketsSold: ticket.quantity
-    }
+      ticketsSold: ticket.quantity,
+    };
     //update ticket quantity
-    await this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
+    await this.rpcEventService.sendWithRpcExceptionHandler<EventResponse>(
       UPDATE_EVENT_CMD,
       updateEvenDto
     );
@@ -102,13 +108,19 @@ export class TicketService {
   @UseRequestContext()
   async purchase(purchaseDto: PurchaseTicketDto) {
     //check if event exist
-    const event = await this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
-      GET_EVENT_CMD,
-      purchaseDto.ticket.event_id
-    );
+    const event =
+      await this.rpcEventService.sendWithRpcExceptionHandler<EventResponse>(
+        GET_EVENT_CMD,
+        purchaseDto.ticket.event_id
+      );
 
-    if (event && event.ticketsSold + purchaseDto.ticket.quantity > event.maximumTickets) {
-      throw new RpcException(new NotFoundException(`There are not enough tickets available`));
+    if (
+      event &&
+      event.ticketsSold + purchaseDto.ticket.quantity > event.maximumTickets
+    ) {
+      throw new RpcException(
+        new NotFoundException(`There are not enough tickets available`)
+      );
     }
 
     //fake payment process with observable delayed
@@ -119,14 +131,23 @@ export class TicketService {
 
     const updateEvenDto = {
       id: purchaseDto.ticket.event_id,
-      ticketsSold: event.ticketsSold + purchaseDto.ticket.quantity
-    }
+      ticketsSold: event.ticketsSold + purchaseDto.ticket.quantity,
+    };
     //update ticket quantity
-    await this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
+    await this.rpcEventService.sendWithRpcExceptionHandler<EventResponse>(
       UPDATE_EVENT_CMD,
       updateEvenDto
     );
 
-    return this.createTicket(purchaseDto.ticket);
+    const user =
+      await this.rpcUserService.sendWithRpcExceptionHandler<UserResponse>(
+        GET_USER_CMD,
+        purchaseDto.ticket.user_id
+      );
+
+    const ticket = await this.createTicket(purchaseDto.ticket);
+    this.mailService.sendEmail(user.email, event, ticket);
+
+    return ticket;
   }
 }

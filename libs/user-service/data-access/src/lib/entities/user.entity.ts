@@ -16,7 +16,7 @@ export class UserEntity extends BaseEntity implements User {
   email!: string;
 
   @Property()
-  password: string;
+  password!: string;
 
   @Property()
   role: UserRole = UserRole.USER;

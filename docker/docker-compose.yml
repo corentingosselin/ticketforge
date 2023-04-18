@@ -13,6 +13,16 @@ services:
       - '15672:15672'
     volumes:
       - rabbitmq-volume:/var/lib/rabbitmq
+  # smtp4dev
+  smtp4dev:
+    container_name: 'smtp4dev'
+    image: rnwood/smtp4dev:v3
+    ports:
+      - '25:25'
+      - '12140:80'
+    volumes:
+      - smtp4dev-data:/smtp4dev
 volumes:
   rabbitmq-volume:
+  smtp4dev-data:
 name: ticketforge
