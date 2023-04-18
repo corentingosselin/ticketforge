@@ -19,6 +19,7 @@ import {
 } from '@ticketforge/api-gateway/utils';
 import {
   CreateTicketDto,
+  PurchaseTicketDto,
   UpdateTicketDto,
   UserRole
 } from '@ticketforge/shared/api-interfaces';
@@ -69,6 +70,13 @@ export class TicketController {
   @Get('user/:id')
   findAll(@Param('id') id: string) {
     return this.ticketService.findAll(id);
+  }
+
+  @Roles(UserRole.USER)
+  @UseGuards(RolesGuard)
+  @Post('buy')
+  async buy(@Body() purchaseDto: PurchaseTicketDto) {
+    return this.ticketService.purchase(purchaseDto);
   }
 
 }

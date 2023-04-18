@@ -2,11 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateTicketDto,
+  PurchaseTicketDto,
   TICKET_SERVICE,
   TicketResponse,
   UpdateTicketDto
 } from '@ticketforge/shared/api-interfaces';
 import {
+  BUY_TICKET_CMD,
   CREATE_TICKET_CMD,
   DELETE_TICKET_CMD,
   FIND_ALL_TICKET_CMD,
@@ -63,5 +65,12 @@ export class TicketService implements IService<TicketResponse> {
   async hasOwnership(id: string | number, ownerId: string | number): Promise<boolean> {
       const ticket = await this.findOne(id.toString());
       return ticket.user_id === ownerId;
+  }
+
+  purchase(purchaseDto: PurchaseTicketDto) {
+    return this.rpcService.sendWithRpcExceptionHandler<TicketResponse>(
+      BUY_TICKET_CMD,
+      purchaseDto
+    );
   }
 }

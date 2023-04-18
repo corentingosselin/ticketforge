@@ -4,12 +4,14 @@ import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
   CreateTicketDto,
   EVENT_SERVICE,
+  PurchaseTicketDto,
   TicketResponse,
   USER_SERVICE,
   UpdateTicketDto,
 } from '@ticketforge/shared/api-interfaces';
 import { GET_USER_CMD } from '@ticketforge/shared/message-broker';
 import { TicketEntity } from './entities/ticket.entity';
+import { delay, lastValueFrom, of } from 'rxjs';
 
 @Injectable()
 export class TicketService {
@@ -77,5 +79,15 @@ export class TicketService {
   @UseRequestContext()
   findAll(userId: string) {
     return this.ticketRepository.find({ user_id: userId });
+  }
+
+  @UseRequestContext()
+  async purchase(purchaseDto: PurchaseTicketDto) {
+    //fake payment process with observable delayed
+    const isPurchased = await lastValueFrom(of(true).pipe(delay(4000)));
+    if (!isPurchased) {
+      throw new RpcException(new NotFoundException(`Payment failed`));
+    }
+    return this.createTicket(purchaseDto.ticket);
   }
 }

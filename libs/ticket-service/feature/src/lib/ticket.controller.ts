@@ -2,9 +2,11 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateTicketDto,
+  PurchaseTicketDto,
   UpdateTicketDto,
 } from '@ticketforge/shared/api-interfaces';
 import {
+  BUY_TICKET_CMD,
   CREATE_TICKET_CMD,
   DELETE_TICKET_CMD,
   FIND_ALL_TICKET_CMD,
@@ -40,5 +42,10 @@ export class TicketController {
   @MessagePattern(FIND_ALL_TICKET_CMD)
   findAllTicket(@Payload() userId: string) {
     return this.ticketService.findAll(userId);
+  }
+
+  @MessagePattern(BUY_TICKET_CMD)
+  purchaseTicket(@Payload() purchaseTicketDto: PurchaseTicketDto) {
+    return this.ticketService.purchase(purchaseTicketDto);
   }
 }

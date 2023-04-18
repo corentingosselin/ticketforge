@@ -20,4 +20,5 @@ export const UPDATE_TICKET_CMD = 'UPDATE_TICKET';
 export const GET_TICKET_CMD = 'GET_TICKET';
 export const DELETE_TICKET_CMD = 'DELETE_TICKET';
 export const FIND_ALL_TICKET_CMD = 'FIND_ALL_TICKET_CMD';
+export const BUY_TICKET_CMD = 'BUY_TICKET_CMD';
 
