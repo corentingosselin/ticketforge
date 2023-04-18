@@ -49,4 +49,9 @@ export class EventController {
   async delete(@Param('id') id: string) {
     return this.eventService.delete(id);
   }
+
+  @Get()
+  getAll() {
+    return this.eventService.findAll();
+  }
 }

@@ -10,13 +10,17 @@ import {
 } from '@nestjs/common';
 import { TicketService } from '@ticketforge/api-gateway/data-access';
 import {
+  OwnedType,
+  OwnedTypeGuard,
   OwnerShipGuard,
+  Roles,
   RolesGuard,
   ServiceClass
 } from '@ticketforge/api-gateway/utils';
 import {
   CreateTicketDto,
-  UpdateTicketDto
+  UpdateTicketDto,
+  UserRole
 } from '@ticketforge/shared/api-interfaces';
 
 @Controller('ticket')
@@ -27,13 +31,15 @@ export class TicketController {
     private readonly ticketService: TicketService,
   ) {}
 
-
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @UseGuards(RolesGuard)
   @Post()
   async create(@Body() createTicketDto: CreateTicketDto) {
     return this.ticketService.create(createTicketDto);
   }
 
+  @ServiceClass(TicketService)
+  @UseGuards(OwnerShipGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -50,8 +56,19 @@ export class TicketController {
     return this.ticketService.findOne(id);
   }
 
+  @Roles(UserRole.ADMIN)
+  @UseGuards(RolesGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.ticketService.delete(id);
   }
+
+  @OwnedTypeGuard(OwnedType.USER)
+  @ServiceClass(TicketService)
+  @UseGuards(OwnerShipGuard)
+  @Get('user/:id')
+  findAll(@Param('id') id: string) {
+    return this.ticketService.findAll(id);
+  }
+
 }

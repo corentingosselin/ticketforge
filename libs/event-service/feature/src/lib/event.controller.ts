@@ -5,6 +5,7 @@ import { CreateEventDto, UpdateEventDto } from '@ticketforge/shared/api-interfac
 import {
     CREATE_EVENT_CMD,
     DELETE_TICKET_CMD,
+    FIND_ALL_EVENT_CMD,
     GET_EVENT_CMD,
     UPDATE_EVENT_CMD
 } from '@ticketforge/shared/message-broker';
@@ -34,4 +35,10 @@ export class EventController {
   async deleteEvent(@Payload() id: string) {
     return this.eventService.deleteEvent(id);
   }
+
+  @MessagePattern(FIND_ALL_EVENT_CMD)
+  async findAllEvent() {
+    return this.eventService.findAll();
+  }
+
 }

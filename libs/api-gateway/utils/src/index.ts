@@ -7,5 +7,6 @@ export * from './lib/services/service-context';
 export * from './lib/services/service.factory';
 export * from './lib/services/service.token';
 export * from './lib/decorators/service-class.decorator';
+export * from './lib/decorators/owned-type.decorator';
 
 

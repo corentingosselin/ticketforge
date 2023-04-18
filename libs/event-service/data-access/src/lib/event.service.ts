@@ -50,4 +50,9 @@ export class EventService {
     await this.eventRepository.flush();
     return ref;
   }
+
+  @UseRequestContext()
+  async findAll() {
+    return await this.eventRepository.findAll();
+  }
 }

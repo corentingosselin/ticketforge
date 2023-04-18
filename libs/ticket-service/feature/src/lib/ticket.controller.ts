@@ -1,19 +1,21 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateTicketDto, UpdateTicketDto } from '@ticketforge/shared/api-interfaces';
 import {
-    CREATE_TICKET_CMD,
-    DELETE_TICKET_CMD,
-    GET_TICKET_CMD,
-    UPDATE_TICKET_CMD
+  CreateTicketDto,
+  UpdateTicketDto,
+} from '@ticketforge/shared/api-interfaces';
+import {
+  CREATE_TICKET_CMD,
+  DELETE_TICKET_CMD,
+  FIND_ALL_TICKET_CMD,
+  GET_TICKET_CMD,
+  UPDATE_TICKET_CMD,
 } from '@ticketforge/shared/message-broker';
 import { TicketService } from '@ticketforge/ticket-service/data-access';
 
 @Controller()
 export class TicketController {
-  constructor(
-    private readonly ticketService: TicketService
-  ) {}
+  constructor(private readonly ticketService: TicketService) {}
 
   @MessagePattern(CREATE_TICKET_CMD)
   async createTicket(@Payload() createTicketDto: CreateTicketDto) {
@@ -33,5 +35,10 @@ export class TicketController {
   @MessagePattern(DELETE_TICKET_CMD)
   async deleteTicket(@Payload() id: string) {
     return this.ticketService.deleteTicket(id);
+  }
+
+  @MessagePattern(FIND_ALL_TICKET_CMD)
+  findAllTicket(@Payload() userId: string) {
+    return this.ticketService.findAll(userId);
   }
 }

@@ -3,13 +3,13 @@ import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateTicketDto,
   TICKET_SERVICE,
-  Ticket,
   TicketResponse,
   UpdateTicketDto
 } from '@ticketforge/shared/api-interfaces';
 import {
   CREATE_TICKET_CMD,
   DELETE_TICKET_CMD,
+  FIND_ALL_TICKET_CMD,
   GET_TICKET_CMD,
   UPDATE_TICKET_CMD,
 } from '@ticketforge/shared/message-broker';
@@ -53,14 +53,15 @@ export class TicketService implements IService<TicketResponse> {
     );
   }
 
-  findAll(): Promise<Ticket[]> {
-      throw new Error('Method not implemented.');
+  findAll(userId: string) {
+    return this.rpcService.sendWithRpcExceptionHandler<TicketResponse[]>(
+      FIND_ALL_TICKET_CMD,
+      userId
+    );
   }
 
   async hasOwnership(id: string | number, ownerId: string | number): Promise<boolean> {
       const ticket = await this.findOne(id.toString());
-      console.log(ticket.user_id);
-      console.log(ownerId);
       return ticket.user_id === ownerId;
   }
 }

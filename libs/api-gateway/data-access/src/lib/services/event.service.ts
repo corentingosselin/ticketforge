@@ -9,6 +9,7 @@ import {
 import {
   CREATE_EVENT_CMD,
   DELETE_EVENT_CMD,
+  FIND_ALL_EVENT_CMD,
   GET_EVENT_CMD,
   UPDATE_EVENT_CMD,
 } from '@ticketforge/shared/message-broker';
@@ -52,8 +53,10 @@ export class EventService implements IService<EventResponse> {
     );
   }
 
-  findAll(): Promise<EventResponse[]> {
-    throw new Error('Method not implemented.');
+  findAll() {
+    return this.rpcService.sendWithRpcExceptionHandler<EventResponse[]>(
+      FIND_ALL_EVENT_CMD
+    );
   }
 
 }

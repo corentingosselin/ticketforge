@@ -12,13 +12,15 @@ export class RpcService {
 
   sendWithRpcExceptionHandler<T>(
     command: string,
-    payload: unknown
+    payload?: unknown
   ): Promise<T> {
-    const result = lastValueFrom(this.client.send(command, payload).pipe(
+    // send 0 data if not payload, small trick to allow passing empty payload
+    const result = lastValueFrom(this.client.send(command, payload || 0).pipe(
       catchError((error) => {
         return throwError(() => new RpcException(error));
       }))
     );
     return result;
   }
+  
 }

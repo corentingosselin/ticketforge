@@ -73,4 +73,9 @@ export class TicketService {
     await this.ticketRepository.flush();
     return true;
   }
+
+  @UseRequestContext()
+  findAll(userId: string) {
+    return this.ticketRepository.find({ user_id: userId });
+  }
 }
