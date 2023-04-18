@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
-  UnauthorizedException
+  UnauthorizedException,
 } from '@nestjs/common';
 import { IService } from '@ticketforge/api-gateway/data-access';
 import { UserRole } from '@ticketforge/shared/api-interfaces';
@@ -12,13 +12,10 @@ import { ServiceFactory } from '../services/service.factory';
 
 @Injectable()
 export class OwnerShipGuard implements CanActivate {
-
   constructor(
     private readonly jwtService: JwtAuthService,
     private readonly serviceFactory: ServiceFactory
-  ) {
-
-  }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -27,9 +24,9 @@ export class OwnerShipGuard implements CanActivate {
     const jwtUserSession = await this.jwtService.loadToken(authHeader);
     request.user = jwtUserSession;
     const userRole = request.user?.role;
-
+    
     if (
-      !userRole &&
+      userRole &&
       this.hasRole(userRole, [UserRole.ADMIN, UserRole.OPERATOR])
     ) {
       return true;
@@ -37,7 +34,8 @@ export class OwnerShipGuard implements CanActivate {
     //if user owns the entity
     const paramId = request.params.id;
 
-    const service: IService<any> = this.serviceFactory.getCorrectService(context);
+    const service: IService<any> =
+      this.serviceFactory.getCorrectService(context);
 
     //How to get this service from the controller ?
     if (!service.hasOwnership) {
@@ -49,11 +47,7 @@ export class OwnerShipGuard implements CanActivate {
       );
     }
 
-    const hasOwnership = await service.hasOwnership(
-      paramId,
-      request.user.sub
-    );
-
+    const hasOwnership = await service.hasOwnership(paramId, request.user.sub);
 
     if (!hasOwnership) {
       throw new UnauthorizedException(
@@ -65,6 +59,8 @@ export class OwnerShipGuard implements CanActivate {
   }
 
   hasRole(userRole: UserRole, roles: UserRole[]) {
+    console.log(roles);
+    console.log(roles.includes(userRole));
     return userRole && roles.includes(userRole);
   }
 }
