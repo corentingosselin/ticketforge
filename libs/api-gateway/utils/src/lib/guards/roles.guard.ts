@@ -5,29 +5,19 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
 import { UserRole } from '@ticketforge/shared/api-interfaces';
+import { JwtAuthService } from '../services/jwt-auth.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService, private readonly reflector: Reflector) {}
+  constructor(private readonly jwtService: JwtAuthService, private readonly reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedException('Invalid token format');
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    try {
-      const decoded = await this.jwtService.verify(token);
-      request.user = decoded;
-    } catch (error) {
-      throw new UnauthorizedException('Invalid token');
-    }
+    const jwtUserSession = await this.jwtService.loadToken(authHeader);
+    request.user = jwtUserSession;
 
     const roles = this.reflector.get<UserRole[]>('roles', context.getHandler());
 
@@ -36,7 +26,6 @@ export class RolesGuard implements CanActivate {
     }
 
     const userRole = request.user?.role;
-    console.log(request);
 
     if (!userRole || !roles.includes(userRole)) {
       throw new UnauthorizedException('Insufficient role');

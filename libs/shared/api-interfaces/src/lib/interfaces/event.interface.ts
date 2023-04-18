@@ -5,5 +5,6 @@ export interface Event extends Entity {
   city: string;
   description: string;
   maximumTickets: number;
+  ticketPrice: number;
   date: Date;
 }

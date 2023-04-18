@@ -4,14 +4,8 @@ import { Ticket } from '../interfaces/ticket.interface';
 type DEFAULT_OMIT = 'created_at' | 'updated_at' | 'id';
 
 export class CreateTicketDto implements Omit<Ticket, DEFAULT_OMIT> {
-  @IsString()
-  name!: string;
-  @IsString()
-  title!: string;
-  @IsString()
-  description!: string;
   @IsNumber()
-  price!: number;
+  purchasedPrice!: number;
   @IsString()
   user_id!: string;
   @IsString()
@@ -21,14 +15,8 @@ export class CreateTicketDto implements Omit<Ticket, DEFAULT_OMIT> {
 export class UpdateTicketDto implements Partial<CreateTicketDto> {
   @IsString()
   id!: string;
-  @IsString()
-  name?: string;
-  @IsString()
-  title?: string;
-  @IsString()
-  description?: string;
   @IsNumber()
-  price?: number;
+  purchasedPrice?: number;
   @IsString()
   user_id?: string;
   @IsString()

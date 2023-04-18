@@ -4,7 +4,7 @@ import {
   CreateEventDto,
   EVENT_SERVICE,
   EventResponse,
-  UpdateEventDto,
+  UpdateEventDto
 } from '@ticketforge/shared/api-interfaces';
 import {
   CREATE_EVENT_CMD,
@@ -13,9 +13,10 @@ import {
   UPDATE_EVENT_CMD,
 } from '@ticketforge/shared/message-broker';
 import { RpcService } from '@ticketforge/shared/network';
+import { IService } from '../service.interface';
 
 @Injectable()
-export class EventService {
+export class EventService implements IService<EventResponse> {
   private readonly rpcService: RpcService;
   constructor(
     @Inject(EVENT_SERVICE) private readonly eventService: ClientProxy
@@ -23,31 +24,36 @@ export class EventService {
     this.rpcService = new RpcService(this.eventService);
   }
 
-  createEvent(createEventDto: CreateEventDto) {
+  create(createEventDto: CreateEventDto) {
     return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
       CREATE_EVENT_CMD,
       createEventDto
     );
   }
 
-  updateEvent(updateEventDto: UpdateEventDto) {
+  update(updateEventDto: UpdateEventDto) {
     return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
       UPDATE_EVENT_CMD,
       updateEventDto
     );
   }
 
-  getEvent(id: string) {
+  findOne(id: string) {
     return this.rpcService.sendWithRpcExceptionHandler<EventResponse>(
       GET_EVENT_CMD,
       id
     );
   }
 
-  deleteEvent(id: string) {
+  delete(id: string) {
     return this.rpcService.sendWithRpcExceptionHandler<boolean>(
       DELETE_EVENT_CMD,
       id
     );
   }
+
+  findAll(): Promise<EventResponse[]> {
+    throw new Error('Method not implemented.');
+  }
+
 }

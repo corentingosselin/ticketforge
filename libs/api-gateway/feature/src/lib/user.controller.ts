@@ -16,28 +16,31 @@ import { CreateUserDto, UpdateUserDto, UserAccountResponse, UserRole } from '@ti
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Roles(UserRole.ADMIN)
+  @UseGuards(RolesGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+    return this.userService.create(createUserDto);
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     updateUserDto.id = id;
-    return this.userService.updateUser(updateUserDto);
+    return this.userService.update(updateUserDto);
   }
 
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @Get(':id')
   async get(@Param('id') id: string) {
-    const user = await this.userService.getUser(id);
-    delete user.password;
+    const user = await this.userService.findOne(id);
     return user as UserAccountResponse;
   }
 
+  @Roles(UserRole.ADMIN)
+  @UseGuards(RolesGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.userService.deleteUser(id);
+    return this.userService.delete(id);
   }
 }

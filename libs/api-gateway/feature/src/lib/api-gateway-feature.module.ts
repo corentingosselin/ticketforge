@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import {
   ApiGatewayDataAccessModule
 } from '@ticketforge/api-gateway/data-access';
+import { JwtAuthService, ServiceFactory } from '@ticketforge/api-gateway/utils';
 import { AuthController } from './auth.controller';
 import { EventController } from './event.controller';
 import { TicketController } from './ticket.controller';
 import { UserController } from './user.controller';
-import { JwtAuthGuard } from '@ticketforge/api-gateway/utils';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [
@@ -17,7 +17,8 @@ import { JwtModule } from '@nestjs/jwt';
     UserController,
   ],
   providers: [
-    JwtAuthGuard,
+    JwtAuthService,
+    ServiceFactory
   ],
   exports: [],
   imports: [
@@ -25,7 +26,7 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '30m' },
-    }),
+    })
   ],
 })
 export class ApiGatewayFeatureModule {}

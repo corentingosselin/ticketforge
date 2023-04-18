@@ -14,6 +14,8 @@ export class CreateEventDto implements Omit<Event, DEFAULT_OMIT> {
   date!: Date;
   @IsNumber()
   maximumTickets!: number;
+  @IsNumber()
+  ticketPrice!: number;
 }
 
 export class UpdateEventDto implements Partial<CreateEventDto> {
@@ -29,4 +31,6 @@ export class UpdateEventDto implements Partial<CreateEventDto> {
   date?: Date;
   @IsNumber()
   maximumTickets?: number;
+  @IsNumber()
+  ticketPrice?: number;
 }

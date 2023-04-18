@@ -6,10 +6,10 @@ import {
   USER_SERVICE,
 } from '@ticketforge/shared/api-interfaces';
 import { SharedMessageBrokerModule } from '@ticketforge/shared/message-broker';
-import { AuthService } from './auth.service';
-import { EventService } from './event.service';
-import { TicketService } from './ticket.service';
-import { UserService } from './user.service';
+import { AuthService } from './services/auth.service';
+import { TicketService } from './services/ticket.service';
+import { EventService } from './services/event.service';
+import { UserService } from './services/user.service';
 
 @Module({
   controllers: [],
