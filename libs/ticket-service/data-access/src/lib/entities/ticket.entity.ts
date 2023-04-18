@@ -5,7 +5,10 @@ import { BaseEntity, Ticket } from '@ticketforge/shared/api-interfaces';
 export class TicketEntity extends BaseEntity implements Ticket {
 
   @Property()
-  purchasedPrice!: number;
+  purchasedUnitPrice!: number;
+
+  @Property()
+  quantity!: number;
 
   @Property()
   user_id!: string;

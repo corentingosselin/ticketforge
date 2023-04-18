@@ -26,7 +26,7 @@ export class EventService {
   async getEvent(id: string) {
     const event = await this.eventRepository.findOne(id);
     if (!event) {
-      throw new RpcException(new NotFoundException(`Event  not found`));
+      throw new RpcException(new NotFoundException(`Event not found`));
     }
     return event as EventResponse;
   }
@@ -34,7 +34,7 @@ export class EventService {
   async deleteEvent(id: string) {
     const event = this.eventRepository.getReference(id);
     if (!event) {
-      throw new RpcException(new NotFoundException(`Event  not found`));
+      throw new RpcException(new NotFoundException(`Event not found`));
     }
     await this.eventRepository.remove(event).flush();
     return true;
@@ -44,7 +44,7 @@ export class EventService {
   async updateEvent(updateEventDto: UpdateEventDto) {
     const ref = this.eventRepository.getReference(updateEventDto.id);
     if (!ref) {
-      throw new RpcException(new NotFoundException(`Event  not found`));
+      throw new RpcException(new NotFoundException(`Event not found`));
     }
     Object.assign(ref, updateEventDto);
     await this.eventRepository.flush();

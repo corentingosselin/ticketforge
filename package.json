@@ -62,7 +62,7 @@
     "useTsNode": true,
     "tsConfigPath": "tsconfig.orm.json",
     "configPaths": [
-      "./libs/ticket-service/core/src/mikro-orm.config.ts"
+      "./libs/event-service/core/src/mikro-orm.config.ts"
     ]
   }
 }

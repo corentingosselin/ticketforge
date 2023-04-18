@@ -15,6 +15,12 @@ export class EventEntity extends BaseEntity implements Event {
   @Property()
   maximumTickets!: number;
 
+  @Property({ default: 0 as number})
+  ticketsSold!: number;
+
+  @Property()
+  ticketPrice!: number;
+
   @Property()
   date!: Date;
 }

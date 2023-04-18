@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 import { User } from '../interfaces/user.interface';
 import { IsPasswordSecure, Match } from '@ticketforge/shared/utils';
 
@@ -29,19 +29,24 @@ export class UpdateUserDto implements Partial<CreateUserDto> {
   @IsString()
   id!: string;
 
+  @IsOptional()
   @IsString()
   firstName?: string;
 
+  @IsOptional()
   @IsString()
   lastName?: string;
 
+  @IsOptional()
   @IsString()
   email?: string;
 
+  @IsOptional()
   @IsString()
   @IsPasswordSecure()
   password?: string;
 
+  @IsOptional()
   @IsString()
   @Match('password')
   confirmPassword?: string;

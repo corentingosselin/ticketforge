@@ -72,6 +72,8 @@ export class TicketController {
     return this.ticketService.findAll(id);
   }
 
+  // TODO: vulnerability, anyone can buy a ticket with any user id
+  // we need a better guard with custom decorator that provide the field of the dto to verify
   @Roles(UserRole.USER)
   @UseGuards(RolesGuard)
   @Post('buy')

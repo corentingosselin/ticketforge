@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   Max,
   Min,
@@ -14,20 +15,34 @@ type DEFAULT_OMIT = 'created_at' | 'updated_at' | 'id';
 
 export class CreateTicketDto implements Omit<Ticket, DEFAULT_OMIT> {
   @IsNumber()
-  purchasedPrice!: number;
+  purchasedUnitPrice!: number;
+
+  @IsNumber()
+  @Min(1)
+  @Max(10)
+  quantity!: number;
+
   @IsString()
   user_id!: string;
+
   @IsString()
   event_id!: string;
+
 }
 
 export class UpdateTicketDto implements Partial<CreateTicketDto> {
   @IsString()
   id!: string;
+  
+  @IsOptional()
   @IsNumber()
-  purchasedPrice?: number;
+  purchasedUnitPrice?: number;
+
+  @IsOptional()
   @IsString()
   user_id?: string;
+
+  @IsOptional()
   @IsString()
   event_id?: string;
 }
