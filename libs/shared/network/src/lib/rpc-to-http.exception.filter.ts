@@ -20,7 +20,6 @@ export class RpcToHttpExceptionFilter implements ExceptionFilter {
     let status = 500;
     let message = 'Internal server error';
 
-
     if (isRpcError(error))  {
       status = error.status || status;
       message = error.message || message;
@@ -32,7 +31,7 @@ export class RpcToHttpExceptionFilter implements ExceptionFilter {
       Logger.error(exception.stack, RpcToHttpExceptionFilter.name);
     }
     
-    return response.status(status).json({
+    return response.status(status).send({
       statusCode: status,
       message,
     });
