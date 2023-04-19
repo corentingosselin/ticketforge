@@ -16,7 +16,8 @@
         "tsConfig": "apps/user-service/tsconfig.app.json",
         "assets": ["apps/user-service/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/user-service/webpack.config.js"
+        "webpackConfig": "apps/user-service/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},

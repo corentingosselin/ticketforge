@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-COPY /dist/apps/event-service .
+COPY /dist/apps/user-service .
 
 RUN npm install --omit=dev
 

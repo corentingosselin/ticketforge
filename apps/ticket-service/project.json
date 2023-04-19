@@ -16,7 +16,8 @@
         "tsConfig": "apps/ticket-service/tsconfig.app.json",
         "assets": ["apps/ticket-service/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/ticket-service/webpack.config.js"
+        "webpackConfig": "apps/ticket-service/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},

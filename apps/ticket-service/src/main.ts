@@ -10,6 +10,9 @@ import { ConfigService } from '@nestjs/config';
 import { TICKET_SERVICE } from '@ticketforge/shared/api-interfaces';
 import { MessageBrokerService } from '@ticketforge/shared/message-broker';
 import { AppModule } from './app/app.module';
+import '@mikro-orm/core';
+import '@mikro-orm/nestjs';
+import '@nestjs-modules/mailer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

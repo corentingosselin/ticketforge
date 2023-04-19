@@ -1,5 +1,21 @@
 version: '3.9'
 services:
+  api-gateway:
+    env_file:
+      - ../.env.prod
+    build:
+      context: ../
+      dockerfile: apps/api-gateway/Dockerfile
+    container_name: api-gateway
+    profiles:
+      - production
+    volumes:
+      - api-gateway-volume:/usr/src/app
+    restart: always
+    ports:
+      - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
+    depends_on:
+      - rabbitmq
   rabbitmq:
     container_name: 'rabbitmq'
     image: rabbitmq:3.8-management-alpine
@@ -25,4 +41,5 @@ services:
 volumes:
   rabbitmq-volume:
   smtp4dev-data:
+  api-gateway-volume:
 name: ticketforge

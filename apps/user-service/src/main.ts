@@ -10,6 +10,9 @@ import { ConfigService } from '@nestjs/config';
 import { USER_SERVICE } from '@ticketforge/shared/api-interfaces';
 import { MessageBrokerService } from '@ticketforge/shared/message-broker';
 import { AppModule } from './app/app.module';
+import '@mikro-orm/core';
+import '@mikro-orm/nestjs';
+import 'argon2';
 
 
 async function bootstrap() {

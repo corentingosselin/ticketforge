@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY /dist/apps/auth-service .
 
-RUN npm install --prod
+RUN npm install --omit=dev
 
 ENV NODE_ENV production
 

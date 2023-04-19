@@ -1,5 +1,21 @@
 version: '3.9'
 services:
+  event-service:
+    env_file:
+      - ../.env.prod
+    build:
+      context: ../
+      dockerfile: apps/event-service/Dockerfile
+    container_name: event-service
+    profiles:
+      - production
+    volumes:
+      - event-service-volume:/usr/src/app
+    restart: always
+    ports:
+      - ${EVENT_SERVICE_PORT}:${EVENT_SERVICE_PORT}
+    depends_on:
+      - event-service-db
   event-service-db:
     container_name: 'event-service-db'
     image: mysql:latest
@@ -13,3 +29,4 @@ services:
       - event-service-db-volume:/var/lib/mysql
 volumes:
   event-service-db-volume:
+  event-service-volume:

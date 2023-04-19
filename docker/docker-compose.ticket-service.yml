@@ -1,5 +1,21 @@
 version: '3.9'
 services:
+  ticket-service:
+    env_file:
+      - ../.env.prod
+    build:
+      context: ../
+      dockerfile: apps/ticket-service/Dockerfile
+    container_name: ticket-service
+    profiles:
+      - production
+    volumes:
+      - ticket-service-volume:/usr/src/app
+    restart: always
+    ports:
+      - ${TICKET_SERVICE_PORT}:${TICKET_SERVICE_PORT}
+    depends_on:
+      - ticket-service-db
   ticket-service-db:
     container_name: 'ticket-service-db'
     image: mysql:latest
@@ -13,3 +29,4 @@ services:
       - ticket-service-db-volume:/var/lib/mysql
 volumes:
   ticket-service-db-volume:
+  ticket-service-volume:

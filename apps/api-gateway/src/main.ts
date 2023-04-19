@@ -9,6 +9,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
 import { RpcToHttpExceptionFilter } from '@ticketforge/shared/network';
+import '@mikro-orm/core';
+import '@mikro-orm/nestjs';
+import '@nestjs/jwt'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

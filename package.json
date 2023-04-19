@@ -4,8 +4,10 @@
   "license": "MIT",
   "scripts": {
     "start": "nx run-many --target=serve --projects=api-gateway,auth-service,event-service,ticket-service,user-service --parallel --maxParallel=4",
-    "docker": "docker-compose -f docker/docker-compose.yml -f docker/docker-compose.event-service.yml -f docker/docker-compose.ticket-service.yml -f docker/docker-compose.user-service.yml -f docker/docker-compose.flyway.yml --env-file docker/.docker-compose.env up -d --force-recreate",
-    "migration:generate": "npx mikro-orm migration:create --initial"
+    "docker": "docker-compose -f docker/docker-compose.yml -f docker/docker-compose.event-service.yml -f docker/docker-compose.ticket-service.yml -f docker/docker-compose.user-service.yml -f docker/docker-compose.flyway.yml --env-file docker/.docker-compose.env up -d",
+    "docker:prod": "docker-compose -f docker/docker-compose.yml -f docker/docker-compose.event-service.yml -f docker/docker-compose.ticket-service.yml -f docker/docker-compose.user-service.yml -f docker/docker-compose.auth-service.yml -f docker/docker-compose.flyway.yml --env-file docker/.docker-compose.env --profile production up -d",
+    "migration:generate": "npx mikro-orm migration:create --initial",
+    "build:all": "nx run-many --targets=build --all"
   },
   "private": true,
   "dependencies": {

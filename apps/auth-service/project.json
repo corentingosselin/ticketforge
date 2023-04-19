@@ -16,7 +16,8 @@
         "tsConfig": "apps/auth-service/tsconfig.app.json",
         "assets": ["apps/auth-service/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/auth-service/webpack.config.js"
+        "webpackConfig": "apps/auth-service/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},

@@ -1,5 +1,21 @@
 version: '3.9'
 services:
+  user-service:
+    env_file:
+      - ../.env.prod
+    build:
+      context: ../
+      dockerfile: apps/user-service/Dockerfile
+    container_name: user-service
+    profiles:
+      - production
+    volumes:
+      - user-service-volume:/usr/src/app
+    restart: always
+    ports:
+      - ${USER_SERVICE_PORT}:${USER_SERVICE_PORT}
+    depends_on:
+      - user-service-db
   user-service-db:
     container_name: 'user-service-db'
     image: mysql:latest
@@ -13,3 +29,4 @@ services:
       - user-service-db-volume:/var/lib/mysql
 volumes:
   user-service-db-volume:
+  user-service-volume:
