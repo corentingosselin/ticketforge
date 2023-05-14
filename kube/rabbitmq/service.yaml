@@ -21,7 +21,6 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: broker
   name: rabbitmq-client
   labels:
     app: rabbitmq
