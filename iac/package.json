@@ -1,0 +1,12 @@
+{
+    "name": "4webd-iac",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^16"
+    },
+    "dependencies": {
+        "@pulumi/gcp": "^6.0.0",
+        "@pulumi/kubernetes": "^3.26.0",
+        "@pulumi/pulumi": "^3.0.0"
+    }
+}
