@@ -19,7 +19,6 @@ services:
     depends_on:
       - event-service-db
 
-
   flyway_ticket-service-db:
     image: flyway/flyway:latest
     container_name: flyway_ticket-service-db

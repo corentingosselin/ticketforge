@@ -16,9 +16,7 @@ import '@nestjs/jwt'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  //const app = await NestFactory.create(AppModule);
-
-
+  //const app = await NestFactory.create(AppModule);  
   const fastifyOptions: ConstructorParameters<typeof FastifyAdapter>[0] = {
     logger: true,
   };
@@ -28,8 +26,6 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const config = app.get(ConfigService);
-
-  
 
   app.useGlobalFilters(new RpcToHttpExceptionFilter());
 
