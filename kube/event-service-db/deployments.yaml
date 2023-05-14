@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service-db
+spec:
+  selector:
+    matchLabels:
+      app: event-service-db
+  template:
+    metadata:
+      labels:
+        app: event-service-db
+    spec:
+      containers:
+      - name: event-service-db
+        image: mysql:8
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+          requests:
+            memory: "1Gi"
+            cpu: "250m"
+        volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-data
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_ROOT_USER
+            value: root
+          - name: MYSQL_DATABASE
+            value: ticketforge
+        ports:
+        - containerPort: 3306
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: event-mysql

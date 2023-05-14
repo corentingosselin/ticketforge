@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  event-service
+  labels:
+    name:  event-service
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name:  event-service
+    spec:
+      containers:
+      - image: europe-west2-docker.pkg.dev/4WEBD/webd-384707/event-service:0.1
+        name: event-service
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1024M"
+          requests:
+            cpu: "100m"
+            memory: "1024M"
+        ports:
+        - containerPort: 3000
+          name: event-service
+        volumeMounts:
+        - mountPath: /usr/src/app/.env
+          subPath: .env
+          name: env
+      volumes:
+        - name: env
+          configMap:
+            name: ticketforge
+      restartPolicy: Always
+      imagePullPolicy: Always

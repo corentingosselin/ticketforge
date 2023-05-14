@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ticketforge
+  labels:
+    app: ticketforge
+data:
+  .env: |
+    MESSAGE_BROKER_URI=amqp://root:root@rabbitmq:5672
+    # Queues
+    # API_GATEWAY -> USER_SERVICE
+    MB_USER_QUEUE=user
+    # API_GATEWAY -> AUTH_SERVICE
+    MB_AUTH_QUEUE=auth
+    # API_GATEWAY -> TICKET_SERVICE
+    MB_TICKET_QUEUE=ticket
+    # API_GATEWAY -> EVENT_SERVICE
+    MB_EVENT_QUEUE=event
+    # AUTH_SERVICE -> USER_SERVICE
+    MB_USER_AUTH_QUEUE=user_auth
+    USER_SERVICE_MYSQL_HOST=user-service-db
+    TICKET_SERVICE_MYSQL_HOST=ticket-service-db
+    EVENT_SERVICE_MYSQL_HOST=event-service-db
+    MYSQL_DATABASE=ticketforge
+    MYSQL_USER=root
+    MYSQL_PASSWORD=root
+    USER_SERVICE_DB_PORT=3306
+    TICKET_SERVICE_DB_PORT=3307
+    EVENT_SERVICE_DB_PORT=3308
+    API_GATEWAY_PORT=3000
+    USER_SERVICE_PORT=3200
+    AUTH_SERVICE_PORT=3300
+    TICKET_SERVICE_PORT=3400
+    EVENT_SERVICE_PORT=3500
+    SMTP_HOST=smtp4dev
+    SMTP_PORT=25
+    SMTP_SECURE=false
+    SMTP_IGNORE_TLS=true
+    JWT_SECRET="ThisIsSecret"

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "rabbitmq"
+  serviceName: rabbitmq-headless
+  template:
+    metadata:
+      name: rabbitmq
+      labels:
+        app: rabbitmq
+    spec:
+      initContainers:
+        - name: "rabbitmq-config"
+          image: busybox:1.32.0
+          volumeMounts:
+            - name: rabbitmq-config
+              mountPath: /tmp/rabbitmq
+            - name: rabbitmq-config-rw
+              mountPath: /etc/rabbitmq
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq/mnesia
+          command:
+            - sh
+            - -c
+            # the newline is needed since the Docker image entrypoint scripts appends to the config file
+            - cp /tmp/rabbitmq/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf && echo '' >> /etc/rabbitmq/rabbitmq.conf;
+              cp /tmp/rabbitmq/enabled_plugins /etc/rabbitmq/enabled_plugins
+      volumes:
+        - name: rabbitmq-config
+          configMap:
+            name: rabbitmq-config
+            optional: false
+            items:
+              - key: enabled_plugins
+                path: "enabled_plugins"
+              - key: rabbitmq.conf
+                path: "rabbitmq.conf"
+        - name: rabbitmq-config-rw
+          emptyDir: {}
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: rabbit
+      serviceAccountName: rabbitmq
+      securityContext:
+        fsGroup: 999
+        runAsUser: 999
+        runAsGroup: 999
+      containers:
+        - name: rabbitmq
+          # Community Docker Image
+          image: rabbitmq:3.10-management
+          volumeMounts:
+            # mounting rabbitmq.conf and enabled_plugins
+            # this should have writeable access, this might be a problem
+            - name: rabbitmq-config-rw
+              mountPath: "/etc/rabbitmq"
+              # mountPath: "/etc/rabbitmq/conf.d/"
+            - name: rabbitmq-data
+              mountPath: "/var/lib/rabbitmq/mnesia"
+          env:
+            - name: RABBITMQ_PASSWORD
+              value: root
+            - name: RABBITMQ_USERNAME
+              value: root
+          ports:
+            - name: amqp
+              containerPort: 5672
+              protocol: TCP
+            - name: stomp
+              containerPort: 15674
+              protocol: TCP
+            - name: management
+              containerPort: 15672
+              protocol: TCP
+            - name: prometheus
+              containerPort: 15692
+              protocol: TCP
+            - name: epmd
+              containerPort: 4369
+              protocol: TCP

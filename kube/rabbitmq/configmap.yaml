@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  labels:
+    app: ticketforge
+data:
+  enable-plugins: |
+    [rabbitmq_peer_discovery_k8s, rabbitmq_management, rabbitmq_shovel, rabbitmq_shovel_management].
+  rabbitmq.conf: |
+    cluster_formation.peer_discovery_backend = k8s
+    cluster_formation.k8s.host = kubernentes.default.svc.cluster.local
+    cluster_formation.k8s.adress_type = hostname
+    cluster_formation.k8s.service_name = rabbitmq_headless
+    default_user = root
+    default_pass = root

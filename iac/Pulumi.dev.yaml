@@ -1,0 +1,4 @@
+config:
+  gcp:project: webd-384707
+  gcp:region: europe-west2
+  gcp:zone: europe-west2-a
