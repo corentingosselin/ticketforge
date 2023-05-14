@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-service-db-config
+spec:
+  selector:
+    matchLabels:
+      app: ticket-service-db-config
+  template:
+    metadata:
+      labels:
+        app: ticket-service-db-config
+    spec:
+      containers:
+      - name: ticket-service-db-config
+        image: flyway/flyway:latest
+        volumeMounts:
+          - mountPath: /flyway/sql/V1.0__initial_schema.sql
+            subPath: V1.0__initial_schema.sql
+            name: mysql-migration
+        command: [ "flyway" ]
+        args: [ "-url=jdbc:mysql://ticket-service-db:3306/ticketforge?allowPublicKeyRetrieval=true&useSSL=false", "-user=root", "-password=roott", "-connectRetries=60", "-connectRetriesInterval=5", "migrate" ]
+        resources:
+          limits:
+            memory: "8Gi"
+            cpu: "500m"
+          requests:
+            memory: "4Gi"
+            cpu: "250m"
+      volumes:
+        - name:  mysql-migration
+          configMap:
+            name: ticket-service-db
+

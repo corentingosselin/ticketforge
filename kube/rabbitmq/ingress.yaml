@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rabbitmq-client
+  labels:
+    name: ticketforge
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ticketforge.com/broker
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: rabbitmq-client
+            port: 
+              number: 15672
+  - host: ticketforge.com/broker-stomp
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: rabbitmq-client
+            port: 
+              number: 15674

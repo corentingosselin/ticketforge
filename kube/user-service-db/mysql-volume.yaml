@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: users-data
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  csi:
+    driver: pd.csi.storage.gke.io
+    volumeHandle: projects/webd-384707/regions/europe-west2/disks/mysql-regiondisk-9e74aeb
+    fsType: ext4
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.gke.io/zone
+            operator: In
+            values:
+              - europe-west2-a
+              - europe-west2-b
+          - key: failure-domain.beta.kubernetes.io/zone
+            operator: In
+            values:
+              - europe-west2-a
+              - europe-west2-b
+          - key: failure-domain.beta.kubernetes.io/region
+            operator: In
+            values:
+              - europe-west2

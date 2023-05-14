@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  labels:
+    name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      name: api-gateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: api-gateway
+    spec:
+      containers:
+      - image: gcr.io/webd-384707/api-gateway:0.1
+        name: api-gateway
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1024M"
+          requests:
+            cpu: "100m"
+            memory: "1024M"
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: /usr/src/app/.env
+          subPath: .env
+          name: env
+      volumes:
+        - name: env
+          configMap:
+            name: ticketforge

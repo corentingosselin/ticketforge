@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rabbitmq
+spec:
+  capacity:
+    storage: 25Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: standard
+  mountOptions:
+    - hard
+  csi:
+    driver: pd.csi.storage.gke.io
+    volumeHandle: projects/webd-384707/regions/europe-west2/disks/rabbitmq-regiondisk-809040e 
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.gke.io/zone
+            operator: In
+            values:
+              - europe-west2-a
+              - europe-west2-b
+          - key: failure-domain.beta.kubernetes.io/zone
+            operator: In
+            values:
+              - europe-west2-a
+              - europe-west2-b
+          - key: failure-domain.beta.kubernetes.io/region
+            operator: In
+            values:
+              - europe-west2
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rabbitmq
+spec:
+  volumeName: rabbitmq
+  resources:
+    requests:
+      storage: 25Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard

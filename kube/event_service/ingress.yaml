@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: event-service
+  labels:
+    name: event-service
+spec:
+  rules:
+  - host: "http://ticketforge.com/auth"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: event-service
+            port: 
+              number: 80

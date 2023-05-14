@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service-db-config
+spec:
+  selector:
+    matchLabels:
+      app: event-service-db-config
+  template:
+    metadata:
+      labels:
+        app: event-service-db-config
+    spec:
+      containers:
+      - name: event-service-db-config
+        image: flyway/flyway:latest
+        volumeMounts:
+          - mountPath: /flyway/sql/migration.sql
+            subPath: migration.sql
+            name: mysql-migration
+        command:
+          - "sh"
+          - "-c"
+          - "-url=jdbc:mysql://event-service-db:3306/ticketforge?allowPublicKeyRetrieval=true -user=root -password=root -connectRetries=60 -connectRetriesInterval=5 migrate"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+      volumes:
+        - name:  mysql-migration
+          configMap:
+            name: event-service-db
+

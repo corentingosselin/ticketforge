@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ticket-service-db
+  labels:
+    name: ticket-service-db
+spec:
+  rules:
+  - host: ticketforge.ticket.bdd.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ticket-service-db
+            port: 
+              number: 3307
