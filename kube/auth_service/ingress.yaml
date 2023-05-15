@@ -6,7 +6,7 @@ metadata:
     name: auth-service
 spec:
   rules:
-  - host: ticketforge.com/auth
+  - host: ticketforge.auth.com
     http:
       paths:
       - pathType: Prefix

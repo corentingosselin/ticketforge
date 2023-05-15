@@ -44,7 +44,7 @@ spec:
           emptyDir: {}
         - name: rabbitmq-data
           persistentVolumeClaim:
-            claimName: rabbit
+            claimName: rabbitmq
       serviceAccountName: rabbitmq
       securityContext:
         fsGroup: 999
@@ -83,3 +83,10 @@ spec:
             - name: epmd
               containerPort: 4369
               protocol: TCP
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "500m"
+              memory: "256Mi"

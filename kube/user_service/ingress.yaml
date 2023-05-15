@@ -6,7 +6,7 @@ metadata:
     name: user-service
 spec:
   rules:
-  - host: ticketforge.com/users
+  - host: ticketforge.user.com
     http:
       paths:
       - pathType: Prefix

@@ -8,13 +8,13 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
-  mountOptions:
-    - hard
+
   csi:
     driver: pd.csi.storage.gke.io
-    volumeHandle: projects/webd-384707/regions/europe-west2/disks/rabbitmq-regiondisk-809040e 
+    volumeHandle: projects/webd-384707/regions/europe-west2/disks/rabbitmq-regiondisk-809040e
+    fsType: ext4
   nodeAffinity:
     required:
       nodeSelectorTerms:

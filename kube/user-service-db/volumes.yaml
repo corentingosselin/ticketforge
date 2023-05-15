@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: user-mysql
 spec:
-  volumeName: user-data
+  volumeName: users-data
   resources:
     requests:
       storage: 8Gi

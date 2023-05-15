@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: ticketforge.com/broker
+  - host: ticketforge.broker.com
     http:
       paths:
       - pathType: Prefix
@@ -17,7 +17,7 @@ spec:
             name: rabbitmq-client
             port: 
               number: 15672
-  - host: ticketforge.com/broker-stomp
+  - host: ticketforge.broker-stomp.com
     http:
       paths:
       - pathType: Prefix

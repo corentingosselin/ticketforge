@@ -1,10 +1,13 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  user-service
   labels:
     name:  user-service
 spec:
+  selector:
+    matchLabels:
+      name: user-service
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -13,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        name:  user-service
+        name: user-service
     spec:
       containers:
-      - image: europe-west2-docker.pkg.dev/4WEBD/webd-384707/user-service:0.1
+      - image: gcr.io/webd-384707/user-service:0.1
         name: user-service
         resources:
           limits:
@@ -36,5 +39,3 @@ spec:
         - name: env
           configMap:
             name: ticketforge
-      restartPolicy: Always
-      imagePullPolicy: Always

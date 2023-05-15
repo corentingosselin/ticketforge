@@ -1,10 +1,13 @@
-apiVersion: extensions/v1beta1
+apiVersion:  apps/v1
 kind: Deployment
 metadata:
   name:  auth-service
   labels:
     name:  auth-service
 spec:
+  selector:
+    matchLabels:
+      name: auth-service
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -13,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        name:  auth-service
+        name: auth-service
     spec:
       containers:
-      - image: europe-west2-docker.pkg.dev/4WEBD/webd-384707/auth-service:0.1
+      - image: gcr.io/webd-384707/auth-service:0.1
         name: auth-service
         resources:
           limits:
@@ -36,5 +39,3 @@ spec:
         - name: env
           configMap:
             name: ticketforge
-      restartPolicy: Always
-      imagePullPolicy: Always
