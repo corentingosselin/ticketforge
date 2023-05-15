@@ -21,7 +21,7 @@ async function bootstrap() {
     logger: true,
   };
   const fastifyAdapter = new FastifyAdapter(fastifyOptions);
-  const app= await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
@@ -43,7 +43,8 @@ async function bootstrap() {
 
   setupOpenApi(app);
   const port = config.get('API_GATEWAY_PORT') || 3000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
+  //await app.listen(port);
   Logger.log(
     `🚀 API Gateway is running on: http://localhost:${port}/${globalPrefix}`
   );
