@@ -8,6 +8,7 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from '@ticketforge/api-gateway/data-access';
 import {
   OwnerShipGuard,
@@ -26,6 +27,7 @@ import {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @Post()
@@ -33,6 +35,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @ApiBearerAuth()
   @ServiceClass(UserService)
   @UseGuards(OwnerShipGuard)
   @Put(':id')
@@ -41,6 +44,7 @@ export class UserController {
     return this.userService.update(updateUserDto);
   }
 
+  @ApiBearerAuth()
   @ServiceClass(UserService)
   @UseGuards(OwnerShipGuard)
   @Get(':id')
@@ -49,6 +53,7 @@ export class UserController {
     return user as UserAccountResponse;
   }
 
+  @ApiBearerAuth()
   @ServiceClass(UserService)
   @UseGuards(OwnerShipGuard)
   @Delete(':id')

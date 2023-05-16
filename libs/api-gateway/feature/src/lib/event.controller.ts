@@ -8,6 +8,7 @@ import {
   Put,
   UseGuards
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { EventService } from '@ticketforge/api-gateway/data-access';
 import { Roles, RolesGuard } from '@ticketforge/api-gateway/utils';
 import {
@@ -20,6 +21,7 @@ import {
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @Post()
@@ -27,6 +29,7 @@ export class EventController {
     return this.eventService.create(createEventDto);
   }
 
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
@@ -38,11 +41,13 @@ export class EventController {
     return this.eventService.update(updateEventDto);
   }
 
+  @ApiBearerAuth()
   @Get(':id')
   async get(@Param('id') id: string) {
     return this.eventService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @Delete(':id')

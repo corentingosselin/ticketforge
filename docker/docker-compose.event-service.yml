@@ -23,8 +23,9 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_ROOT_USER=${MYSQL_USER}
+      - MYSQL_TCP_PORT=${EVENT_SERVICE_DB_PORT}
     ports:
-      - '${EVENT_SERVICE_DB_PORT}:3306'
+      - '${EVENT_SERVICE_DB_PORT}:${EVENT_SERVICE_DB_PORT}'
     volumes:
       - event-service-db-volume:/var/lib/mysql
 volumes:

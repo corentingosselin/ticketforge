@@ -5,23 +5,29 @@
 
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
 import { RpcToHttpExceptionFilter } from '@ticketforge/shared/network';
 import '@mikro-orm/core';
 import '@mikro-orm/nestjs';
-import '@nestjs/jwt'
+import '@nestjs/jwt';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  //const app = await NestFactory.create(AppModule);  
+  //const app = await NestFactory.create(AppModule);
   const fastifyOptions: ConstructorParameters<typeof FastifyAdapter>[0] = {
     logger: true,
   };
   const fastifyAdapter = new FastifyAdapter(fastifyOptions);
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    fastifyAdapter
+  );
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
@@ -52,9 +58,13 @@ async function bootstrap() {
 
 bootstrap();
 
-
 function setupOpenApi(app: INestApplication) {
-  const config = new DocumentBuilder().setTitle('API Documentation').setVersion('1.0').addTag('api').build();
+  const config = new DocumentBuilder()
+    .setTitle('API Documentation')
+    .setVersion('1.0')
+    .addTag('api')
+    .addBearerAuth()
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('openApi', app, document, { useGlobalPrefix: true });
 }

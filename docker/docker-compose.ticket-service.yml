@@ -23,8 +23,9 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_ROOT_USER=${MYSQL_USER}
+      - MYSQL_TCP_PORT=${TICKET_SERVICE_DB_PORT}
     ports:
-      - '${TICKET_SERVICE_DB_PORT}:3306'
+      - '${TICKET_SERVICE_DB_PORT}:${TICKET_SERVICE_DB_PORT}'
     volumes:
       - ticket-service-db-volume:/var/lib/mysql
 volumes:

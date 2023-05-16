@@ -8,6 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { TicketService } from '@ticketforge/api-gateway/data-access';
 import {
   OwnedType,
@@ -32,6 +33,7 @@ export class TicketController {
     private readonly ticketService: TicketService,
   ) {}
 
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN, UserRole.USER)
   @UseGuards(RolesGuard)
   @Post()
@@ -39,6 +41,7 @@ export class TicketController {
     return this.ticketService.create(createTicketDto);
   }
 
+  @ApiBearerAuth()
   @ServiceClass(TicketService)
   @UseGuards(OwnerShipGuard)
   @Put(':id')
@@ -50,6 +53,7 @@ export class TicketController {
     return this.ticketService.update(updateTicketDto);
   }
 
+  @ApiBearerAuth()
   @ServiceClass(TicketService)
   @UseGuards(OwnerShipGuard)
   @Get(':id')
@@ -57,6 +61,7 @@ export class TicketController {
     return this.ticketService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @Delete(':id')
@@ -64,6 +69,7 @@ export class TicketController {
     return this.ticketService.delete(id);
   }
 
+  @ApiBearerAuth()
   @OwnedTypeGuard(OwnedType.USER)
   @ServiceClass(TicketService)
   @UseGuards(OwnerShipGuard)
@@ -74,6 +80,7 @@ export class TicketController {
 
   // TODO: vulnerability, anyone can buy a ticket with any user id
   // we need a better guard with custom decorator that provide the field of the dto to verify
+  @ApiBearerAuth()
   @Roles(UserRole.USER)
   @UseGuards(RolesGuard)
   @Post('buy')
