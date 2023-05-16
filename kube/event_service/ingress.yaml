@@ -6,7 +6,7 @@ metadata:
     name: event-service
 spec:
   rules:
-  - host: "http://ticketforge.com/auth"
+  - host: ticketforge.event.com
     http:
       paths:
       - pathType: Prefix
