@@ -7,6 +7,9 @@
 
 ![image](https://github.com/corentingosselin/ticketforge/assets/8132994/abe66ecd-c6db-4ba8-a8b4-7a6b408d2b07)
 
+![image](https://github.com/corentingosselin/ticketforge/assets/8132994/7b9098c0-3c45-4b98-8094-5afefadd81b4)
+
+
 
 
 
