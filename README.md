@@ -1,10 +1,8 @@
 # Ticketforge
 
 
-![image](https://github.com/corentingosselin/ticketforge/assets/8132994/76534eb9-4b90-42e0-8030-0528fbc1045c)
-![image](https://github.com/corentingosselin/ticketforge/assets/8132994/5037d6c9-6297-4487-a3e1-c8e0a728db41)
-![image](https://github.com/corentingosselin/ticketforge/assets/8132994/ba877564-4fe4-40e4-b29b-4a30f6df4622)
-![image](https://github.com/corentingosselin/ticketforge/assets/8132994/de120140-ea0f-4f0b-9985-635e82b22ebc)
+![image](https://github.com/corentingosselin/ticketforge/assets/8132994/8d2e28fe-7108-467a-8f1e-f4a009dc796a)
+
 <img width="1909" alt="image" src="https://github.com/corentingosselin/ticketforge/assets/8132994/96fbc7a6-10df-41dc-821f-513ffb1fa665">
 
 
