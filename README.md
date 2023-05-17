@@ -3,7 +3,6 @@
 
 ![image](https://github.com/corentingosselin/ticketforge/assets/8132994/8d2e28fe-7108-467a-8f1e-f4a009dc796a)
 
-<img width="1909" alt="image" src="https://github.com/corentingosselin/ticketforge/assets/8132994/96fbc7a6-10df-41dc-821f-513ffb1fa665">
 
 
 
