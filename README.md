@@ -9,6 +9,9 @@
 
 ![image](https://github.com/corentingosselin/ticketforge/assets/8132994/7b9098c0-3c45-4b98-8094-5afefadd81b4)
 
+![image](https://github.com/corentingosselin/ticketforge/assets/8132994/3b27788d-ed57-48dd-8503-2ebd06724f38)
+
+![image](https://github.com/corentingosselin/ticketforge/assets/8132994/4c5fbf74-d415-4baf-81b7-11ba268b7691)
 
 
 
